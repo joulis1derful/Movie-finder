@@ -33,3 +33,9 @@ function getMovies(searchText) {
             console.log(err);
     });
 }
+
+function movieSelected(id) {
+    sessionStorage.setItem('movieId', id);
+    window.location = 'movie.html';
+    return false;
+}
