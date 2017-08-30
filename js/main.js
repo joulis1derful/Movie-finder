@@ -49,20 +49,22 @@ function getMovie() {
             let genres = [];
             let production_countries = [];
             let production_companies = [];
-            // let count = 0;
 
             for(let i of movie.genres) {
-                // if(count === 1)
-                //     genres = i.name;
-                genres += i.name + ', ';
-                // count++;
+                genres.push(i.name);
             }
+
             for(let i of movie.production_countries) {
-                production_countries += i.name + ', ';
+                production_countries.push(i.name);
             }
+
             for(let i of movie.production_companies) {
-                production_companies += i.name + ', ';
+                production_companies.push(i.name);
             }
+
+            genres = genres.toString().split(',').join(', ');
+            production_countries = production_countries.toString().split(',').join(', ');
+            production_companies = production_companies.toString().split(',').join(', ');
 
             let output = `
                 <div class="row">
