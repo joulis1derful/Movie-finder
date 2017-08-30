@@ -10,3 +10,12 @@
     height: 500px;
 }
 
+#movie h3 {
+    font-size: 36px;
+    margin-left: 15px;
+}
+
+#movie #overview h4 {
+    font-size: 20px;
+    font-family: "Times New Roman";
+}
