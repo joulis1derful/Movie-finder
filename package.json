@@ -1,0 +1,19 @@
+{
+  "name": "movie-finder",
+  "version": "1.0.0",
+  "description": "Application for getting info about movies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joulis1derful/Movie-finder.git"
+  },
+  "author": "Anton Huzhov <joulis1derful@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joulis1derful/Movie-finder/issues"
+  },
+  "homepage": "https://github.com/joulis1derful/Movie-finder#readme"
+}
