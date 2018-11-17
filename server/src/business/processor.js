@@ -4,7 +4,7 @@ const dotenv = require("dotenv").config()
 
 const API_KEY = process.env.API_KEY
 const SEARCH_MOVIES_URL = process.env.SEARCH_MOVIES_URL
-const TMDB_MOVIE_URL = process.env.MOVIE_URL
+const TMDB_MOVIE_URL = process.env.TMDB_MOVIE_URL
 
 // TODO: insert to db if wasn't found at local db and was found on tmdb
 const findMovieByName = async (name) => {
