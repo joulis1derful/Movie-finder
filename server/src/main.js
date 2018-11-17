@@ -6,6 +6,7 @@ const app = express()
 const APP_PORT = 3000
 
 app.use('/', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
     console.log('y1')
     next()
 })
@@ -27,9 +28,9 @@ app.get('/movies/search', async (req, res) => {
     }
 })
 
-app.get('/movies/:id', (req, res) => {
-    // await processor.insertOn
-    res.send(req.params.id)
+app.get('/movies/:id', async (req, res) => {
+        const movie = await processor.findMovieById(req.params.id)
+        res.json(movie)
 })
 
 app.listen(APP_PORT, () => {
