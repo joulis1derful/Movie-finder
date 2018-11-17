@@ -4,7 +4,7 @@ const dotenv = require("dotenv").config()
 
 const API_KEY = process.env.API_KEY
 const SEARCH_MOVIES_URL = process.env.SEARCH_MOVIES_URL
-const SINGLE_MOVIE_URL = process.env.SINGLE_MOVIE_URL
+const TMDB_MOVIE_URL = process.env.MOVIE_URL
 
 // TODO: insert to db if wasn't found at local db and was found on tmdb
 const findMovieByName = async (name) => {
@@ -20,16 +20,22 @@ const findMovieByName = async (name) => {
 // TODO: insert to db if wasn't found at local db and was found on tmdb
 const findMovieById = async (id) => {
     const movie = await storage.findMovie(id)
-    console.log(movie)
     if (movie) {
         return movie
     }
-    return axios.get(`${SINGLE_MOVIE_URL}/${id}?api_key=${API_KEY}`)
+    return axios.get(`${TMDB_MOVIE_URL}/${id}?api_key=${API_KEY}`)
+         .then((response) => { return response.data })
+         .catch((err) => { throw new Error(err) })
+}
+
+const getTopMovies = async () => {
+    return axios.get(`${TMDB_MOVIE_URL}/top_rated?api_key=${API_KEY}`)
          .then((response) => { return response.data })
          .catch((err) => { throw new Error(err) })
 }
 
 module.exports = {
     findMovieById,
-    findMovieByName
+    findMovieByName,
+    getTopMovies
 }

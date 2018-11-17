@@ -11,8 +11,9 @@ app.use('/', (req, res, next) => {
     next()
 })
 
-app.get('/movies/top', (req, res) => {
-    res.send('TOP movies')
+app.get('/movies/top', async (req, res) => {
+    const movies = await processor.getTopMovies()
+    res.json(movies)
 })
 
 app.get('/movies/recent', (req, res) => {
@@ -29,8 +30,8 @@ app.get('/movies/search', async (req, res) => {
 })
 
 app.get('/movies/:id', async (req, res) => {
-        const movie = await processor.findMovieById(req.params.id)
-        res.json(movie)
+    const movie = await processor.findMovieById(req.params.id)
+    res.json(movie)
 })
 
 app.listen(APP_PORT, () => {
