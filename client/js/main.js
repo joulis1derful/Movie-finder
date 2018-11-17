@@ -9,10 +9,10 @@ $(document).ready(() => {
 });
 
 function getMovies(searchText) {
-    axios.get('https://api.themoviedb.org/3/search/movie?api_key=52cc54558595d4caee5f1c68a7e7396f&query=' + searchText)
+    axios.get('http://localhost:3000/movies/search?name=' + searchText)
         .then((response) => {
-        console.log(response.data.results);
-        let movies = response.data.results;
+        console.log(response.data);
+        let movies = response.data;
         let output = '';
         $.each(movies, (index, movie) => {
             if(movie.poster_path !== null && movie.vote_count !== 0){
@@ -42,7 +42,7 @@ function movieSelected(id) {
 
 function getMovie() {
     let movieId = sessionStorage.getItem('movieId');
-    axios.get('https://api.themoviedb.org/3/movie/'+movieId+'?api_key=52cc54558595d4caee5f1c68a7e7396f')
+    axios.get('http://localhost:3000/movies/' + movieId)
         .then((response) => {
             console.log(response.data);
             let movie = response.data;
