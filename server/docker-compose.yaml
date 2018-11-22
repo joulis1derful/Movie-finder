@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  movie-finder:
+    image: joulis1derful/movie-finder
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - DB_URL=mongodb://172.20.0.2:27017
+      - DB_NAME=tmdb
+      - API_KEY=52cc54558595d4caee5f1c68a7e7396f
+      - SEARCH_MOVIES_URL=https://api.themoviedb.org/3/search/movie
+      - TMDB_MOVIE_URL=https://api.themoviedb.org/3/movie
+    depends_on:
+      - mongodb  
+
+  mongodb:
+    image: mongo:4.0.4
+    restart: always    
+    volumes:
+      - ./data/mongodb/db:/data/db  
+    ports:
+      - 27017:27017
+
+    
