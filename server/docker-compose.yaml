@@ -7,7 +7,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - DB_URL=mongodb://172.20.0.2:27017
+      - DB_URL=mongodb://mongodb:27017
       - DB_NAME=tmdb
       - API_KEY=52cc54558595d4caee5f1c68a7e7396f
       - SEARCH_MOVIES_URL=https://api.themoviedb.org/3/search/movie
@@ -17,7 +17,10 @@ services:
 
   mongodb:
     image: mongo:4.0.4
-    restart: always    
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example    
     volumes:
       - ./data/mongodb/db:/data/db  
     ports:
