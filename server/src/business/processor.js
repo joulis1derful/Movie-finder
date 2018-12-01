@@ -22,9 +22,13 @@ const findMovieById = async (id) => {
     if (movie) {
         return movie
     }
-    return axios.get(`${TMDB_MOVIE_URL}/${id}?api_key=${API_KEY}`)
-         .then((response) => { return response.data })
-         .catch((err) => { throw new Error(err) })
+        const foundMovie = await axios.get(`${TMDB_MOVIE_URL}/${id}?api_key=${API_KEY}`)
+            .then((response) => { return response.data })
+            .catch((err) => { throw new Error(err) })
+
+        await storage.insertMovie(foundMovie)
+
+        return foundMovie
 }
 
 const getTopMovies = async () => {
