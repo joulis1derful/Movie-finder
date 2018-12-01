@@ -1,20 +1,20 @@
 const imageUrl = 'https://image.tmdb.org/t/p/w500';
 
-$(document).ready(() => {
-    $('#searchForm').on('submit', (e) => {
-        let searchText =  $('#searchText').val();
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('searchForm').onsubmit = ((e) => {
+        let searchText =  document.getElementById('searchText').value;
         getMovies(searchText);
         e.preventDefault();
-    });
-});
+    })
+})
 
-function getMovies(searchText) {
+const getMovies = (searchText) => {
     axios.get('http://localhost:3000/movies/search?name=' + searchText)
         .then((response) => {
         console.log(response.data);
         let movies = response.data;
         let output = '';
-        $.each(movies, (index, movie) => {
+        movies.forEach((movie, index) => {
             if(movie.poster_path !== null && movie.vote_count !== 0){
                 output += `
                 <div class="col-md-4">
@@ -27,20 +27,20 @@ function getMovies(searchText) {
             `;
             }
         });
-        $('#movies').html(output);
+        document.getElementById('movies').innerHTML(output);
     })
         .catch((err) => {
             console.log(err);
     });
 }
 
-function movieSelected(id) {
+const movieSelected = (id) => {
     sessionStorage.setItem('movieId', id);
     window.location = 'movie.html';
     return false;
 }
 
-function getMovie() {
+const getMovie = () => {
     let movieId = sessionStorage.getItem('movieId');
     axios.get('http://localhost:3000/movies/' + movieId)
         .then((response) => {
@@ -94,7 +94,7 @@ function getMovie() {
                     </div>
                 </div>
             `;
-            $('#movie').html(output);
+            document.getElementById('movie').innerHTML(output);
         })
         .catch((err) => {
             console.log(err);
