@@ -2,9 +2,9 @@ const imageUrl = 'https://image.tmdb.org/t/p/w500';
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchForm').onsubmit = ((e) => {
+        e.preventDefault()
         let searchText =  document.getElementById('searchText').value;
         getMovies(searchText);
-        e.preventDefault();
     })
 })
 
@@ -27,7 +27,7 @@ const getMovies = (searchText) => {
             `;
             }
         });
-        document.getElementById('movies').innerHTML(output);
+        document.getElementById('movies').innerHTML = output;
     })
         .catch((err) => {
             console.log(err);
@@ -94,7 +94,7 @@ const getMovie = () => {
                     </div>
                 </div>
             `;
-            document.getElementById('movie').innerHTML(output);
+            document.getElementById('movie').innerHTML = output;
         })
         .catch((err) => {
             console.log(err);
