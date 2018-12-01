@@ -6,11 +6,16 @@ const bodyParser = require('body-parser')
 const router = express.Router()
 const JWT_SECRET = process.env.JWT_SECRET
 
-router.get('/login', (req, res, next) => {
-    auth.checkToken(req, res, next)
+router.post('/register', bodyParser.json(), bodyParser.urlencoded({ extended: false }), (req, res, next) => auth.createToken(req, res, next))
+router.use('/login', (req, res, next) => { auth.checkToken(req, res, next) })
+
+router.get('/login', (req, res) => {
+    res.redirect(`/profile/${res.userId}`)
 })
 
-router.post('/register', bodyParser.json(), bodyParser.urlencoded({ extended: false }), (req, res, next) => auth.createToken(req, res, next))
+router.get('/profile/:id', (req, res) => {
+    res.json(`My profile ID is ${req.params.id}`)
+})
 
 router.get('/movies/top', async (req, res, next) => {
     const movies = await processor.getTopMovies()(req, res, next)
