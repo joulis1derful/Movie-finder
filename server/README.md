@@ -10,8 +10,10 @@
 
 ## In case of Docker image update
 - `docker build -t ${DOCKER_USERNAME}/movie-finder`
+
 To ensure image is working okay locally run
 - `docker run -p YOUR_PORT:APP_PORT -d ${DOCKER_USERNAME}/movie-finder`
+
 And then push image to your DockerHub (`docker login` beforehand)
 - `docker push ${DOCKER_USERNAME}/movie-finder`
 
