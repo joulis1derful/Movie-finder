@@ -1,8 +1,9 @@
-const dotenv = require("dotenv").config()
 const mongoClient = require("mongodb").MongoClient
 
 const dbUrl = process.env.DB_URL
 const dbName = process.env.DB_NAME
+const USERNAME = process.env.USERNAME
+const PASSWORD = process.env.PASSWORD
 
 const insertMovie = async (movie) => {
     const client = await getConnection(dbUrl)

@@ -1,6 +1,5 @@
 const storage = require('../domain/movie')
 const axios = require('axios')
-const dotenv = require("dotenv").config()
 
 const API_KEY = process.env.API_KEY
 const SEARCH_MOVIES_URL = process.env.SEARCH_MOVIES_URL

@@ -1,39 +1,16 @@
-const processor = require('./business/processor')
-
+const dotenv = require("dotenv").config()
+const router = require('./routes/router')
+const bodyParser = require('body-parser')
 const express = require('express')
+const APP_PORT = process.env.PORT || 3000
+
 const app = express()
 
-const APP_PORT = 3000
+app.use('/', router)
 
-app.use('/', (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    console.log('y1')
-    next()
-})
-
-app.get('/movies/top', async (req, res) => {
-    const movies = await processor.getTopMovies()
-    res.json(movies)
-})
-
-app.get('/movies/recent', (req, res) => {
-    res.send('Recent')
-})
-
-app.get('/movies/search', async (req, res) => {
-    if (!req.query.name) {
-        res.sendStatus(403)
-    } else {
-        const movies = await processor.findMovieByName(req.query.name)
-        res.json(movies)
-    }
-})
-
-app.get('/movies/:id', async (req, res) => {
-    const movie = await processor.findMovieById(req.params.id)
-    res.json(movie)
-})
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+ 
 app.listen(APP_PORT, () => {
     console.log('Server is listening on port ' + APP_PORT)
 })
