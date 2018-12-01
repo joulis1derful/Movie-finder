@@ -1,37 +1,39 @@
-const express = require('express');
+const express = require('express')
 const processor = require('../business/processor')
-const router = express.Router();
+const auth = require('../middleware/auth')
+const bodyParser = require('body-parser')
 
-router.use('/', (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    console.log('y1')
-    next()
+const router = express.Router()
+const JWT_SECRET = process.env.JWT_SECRET
+
+router.get('/login', (req, res, next) => {
+    auth.checkToken(req, res, next)
 })
 
-router.get('/movies/top', async (req, res) => {
-    const movies = await processor.getTopMovies()
+router.post('/register', bodyParser.json(), bodyParser.urlencoded({ extended: false }), (req, res, next) => auth.createToken(req, res, next))
+
+router.get('/movies/top', async (req, res, next) => {
+    const movies = await processor.getTopMovies()(req, res, next)
     res.json(movies)
 })
 
-router.get('/movies/recent', (req, res) => {
-    res.send('Recent')
-})
-
 router.get('/movies/search', async (req, res, next) => {
-    if (!req.query.name) {
+    const { name } = req.query
+    if (!name) {
         const error = new Error('Invalid movie name was passed in')
         error.status = 403
         next(error)
     } else {
-        const movies = await processor.findMovieByName(req.query.name)
+        const movies = await processor.findMovieByName(name)(req, res)
         res.json(movies)
     }
 })
 
 router.get('/movies/:id', async (req, res, next) => {
-    const regexp = /\d+/
-    if (req.params.id && regexp.test(req.params.id)) {
-        const movie = await processor.findMovieById(req.params.id)
+    const { id } = req.params
+    const regexp = /^\d+$/
+    if (id && regexp.test(id)) {
+        const movie = await processor.findMovieById(id)(req, res)
         res.json(movie)
     } else {
         const error = new Error('Invalid movie id was passed in')
@@ -41,8 +43,7 @@ router.get('/movies/:id', async (req, res, next) => {
 })
 
 router.use((err, req, res, next) => {
-    res.status(err.status || 500)
-       .json({ message: err.message, code: err.status })
+    res.status(err.status || 500).json(err.message)
 })
 
 module.exports = router

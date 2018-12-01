@@ -34,7 +34,8 @@ const getConnection = async (url) => {
     try {
         return await mongoClient.connect(url, { useNewUrlParser: true })
     } catch (err) {
-        throw new Error(err)
+        // log.err
+        console.log(err)
     }
 }
 
