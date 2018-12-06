@@ -1,5 +1,6 @@
+const config = require('../shared/config')
 const jwt = require('jsonwebtoken')
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = config('JWT_SECRET')
 
 const createToken = (req, res, next) => {
     const username = req.body.username
