@@ -26,7 +26,8 @@ const checkToken = (req, res, next) => {
 				error.status = 401  
 				next(error)
 			} else {
-				res.redirect(`/profile/${decoded.userId}`)
+				req.userId = decoded.userId
+				next()
 			}
 		})
 	} else {

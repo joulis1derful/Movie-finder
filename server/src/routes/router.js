@@ -41,7 +41,7 @@ router.post('/login', bodyParser.json(), bodyParser.urlencoded({ extended: false
 			err.status = 409
 			next(err)
 		} else {
-			res.status(200).json({ message: 'Log in succeeded', data: { userId: user.userId } })
+			res.status(200).json({ message: 'Log in succeeded', data: { userId: req.userId } })
 		}
 	} else {
 		const err = new Error('Either no email or password was provided')
