@@ -6,12 +6,27 @@ const dbName = config('DB_NAME')
 const USERNAME = config('USERNAME')
 const PASSWORD = config('PASSWORD')
 
+const updateMoviesToWatch = async (userId, movieId) => {
+	const client = await getConnection(dbUrl)
+	try {
+		const db = client.db(dbName)
+		const user = await db.collection('user').findOne({ userId })
+		const moviesCollection = user.movies_to_watch.push(movieId)
+		await db.collection('user').update({ userId }, { movies_to_watch: moviesCollection }, { upsert: true })
+	} catch (err) {
+		console.log(err)
+	} finally {
+		client.close()
+	}
+}
+
 const createUser = async (email, password) => {
 	const client = await getConnection(dbUrl)
 	try {
 		const db = client.db(dbName)
 		const recordsLength = await db.collection('user').countDocuments()
 		await db.collection('user').insertOne({ email, password, userId: recordsLength + 1 })
+		return recordsLength + 1
 	} catch (err) {
 		console.log(err)
 	} finally {
@@ -57,5 +72,6 @@ const getConnection = async (url) => {
 module.exports = {
 	createUser,
 	findUserById,
-	findUserByEmail
+	findUserByEmail,
+	updateMoviesToWatch
 }

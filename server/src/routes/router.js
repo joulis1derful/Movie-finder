@@ -55,33 +55,15 @@ router.get('/profile/:id', (req, res) => {
 })
 
 router.get('/movies/top', async (req, res, next) => {
-	const movies = await movieService.getTopMovies()(req, res, next)
-	res.json(movies)
+	await movieService.getTopMovies(req, res, next)
 })
 
 router.get('/movies/search', async (req, res, next) => {
-	const { name } = req.query
-	if (!name) {
-		const error = new Error('Invalid movie name was passed in')
-		error.status = 403
-		next(error)
-	} else {
-		const movies = await movieService.findMovieByName(name)(req, res)
-		res.json(movies)
-	}
+	await movieService.findMovieByName(req, res, next)
 })
 
 router.get('/movies/:id', async (req, res, next) => {
-	const { id } = req.params
-	const regexp = /^\d+$/
-	if (id && regexp.test(id)) {
-		const movie = await movieService.findMovieById(id)(req, res)
-		res.json(movie)
-	} else {
-		const error = new Error('Invalid movie id was passed in')
-		error.status = 403
-		next(error)
-	}  
+	await movieService.findMovieById(req, res, next)
 })
 
 router.use((err, req, res, next) => {

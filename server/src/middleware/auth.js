@@ -7,8 +7,8 @@ const createToken = async (req, res, next) => {
 	const email = req.body.email
 	const passwordHash = req.body.password
 
-	await userService.createUser(email, passwordHash)
-	const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: 7200 })
+	const userId = await userService.createUser(email, passwordHash)
+	const token = jwt.sign({ email, userId }, JWT_SECRET, { expiresIn: 7200 })
 	return token
 }
 
@@ -26,8 +26,7 @@ const checkToken = (req, res, next) => {
 				error.status = 401  
 				next(error)
 			} else {
-				req.decoded = decoded
-				next()
+				res.redirect(`/profile/${decoded.userId}`)
 			}
 		})
 	} else {

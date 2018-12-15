@@ -8,27 +8,40 @@ const PASSWORD = config('PASSWORD')
 
 const insertMovie = async (movie) => {
 	const client = await getConnection(dbUrl)
-	const db = client.db(dbName)
-	await db.collection('movie').insertOne(movie)
-	client.close()
+	try {
+		const db = client.db(dbName)
+		await db.collection('movie').insertOne(movie)
+	} catch (err) {
+		console.log(err)
+	} finally {
+		client.close()
+	}
 }
 
 const findMovies = async (name) => {
 	const client = await getConnection(dbUrl)
-	const database = client.db(dbName)
-	const movies = await database.collection('movie').find({ name: name }).toArray()
-	client.close()
-
-	return movies
+	try {
+		const database = client.db(dbName)
+		const movies = await database.collection('movie').find({ name: name }).toArray()
+		return movies
+	} catch (err) {
+		console.log(err)
+	} finally {
+		client.close()
+	}	
 }
 
 const findMovie = async (id) => {
 	const client = await getConnection(dbUrl)
-	const db = client.db(dbName)
-	const movie = await db.collection('movie').findOne({ id: parseInt(id) })
-	client.close()
-
-	return movie
+	try {
+		const db = client.db(dbName)
+		const movie = await db.collection('movie').findOne({ id: parseInt(id) })
+		return movie
+	} catch (err) {
+		console.log(err)
+	} finally {	
+		client.close()
+	}
 }
 
 const getConnection = async (url) => {
