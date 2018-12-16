@@ -46,6 +46,11 @@ const definitions = {
 		env: 'PASSWORD',
 		format: String,
 		default: ''
+	},
+	SALT: {
+		env: 'SALT',
+		format: String,
+		default: ''
 	}
 }
 

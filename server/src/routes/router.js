@@ -1,10 +1,13 @@
+const config = require('../shared/config')
 const express = require('express')
+const crypto = require('crypto')
 const movieService = require('../service/movie')
 const userService = require('../service/user')
 const auth = require('../middleware/auth')
 const bodyParser = require('body-parser')
 
 const router = express.Router()
+const SALT = config('SALT')
 
 router.post('/register', bodyParser.json(), bodyParser.urlencoded({ extended: false }), async (req, res, next) => {
 	if (req.body && req.body.email) {
@@ -32,11 +35,12 @@ router.use('/login', (req, res, next) => {
 router.post('/login', bodyParser.json(), bodyParser.urlencoded({ extended: false }), async (req, res, next) => {
 	if (req.body && req.body.email && req.body.password) {
 		const user = await userService.getUserByEmail(req.body.email)
+		const passwordHash = crypto.pbkdf2Sync(req.body.password, SALT, 1000, 64, 'sha512').toString('hex')
 		if (!user) {
 			const err = new Error('Cannot find user with this email')
 			err.status = 409
 			next(err)
-		} else if (req.body.password !== user.password) {
+		} else if (passwordHash !== user.password) {
 			const err = new Error('Invalid password was provided')
 			err.status = 409
 			next(err)
