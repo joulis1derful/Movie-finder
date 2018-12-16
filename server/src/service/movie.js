@@ -6,7 +6,6 @@ const API_KEY = config('API_KEY')
 const SEARCH_MOVIES_URL = config('SEARCH_MOVIES_URL')
 const TMDB_MOVIE_URL = config('TMDB_MOVIE_URL')
 
-// TODO: insert to db if wasn't found at local db and was found on tmdb
 const findMovieByName = async (req, res, next) => {
 	const { name } = req.query
 	if (!name) {

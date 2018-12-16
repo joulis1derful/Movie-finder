@@ -10,12 +10,16 @@ const router = express.Router()
 const SALT = config('SALT')
 
 router.post('/register', bodyParser.json(), bodyParser.urlencoded({ extended: false }), async (req, res, next) => {
-	if (req.body && req.body.email) {
-		const user = await userService.getUserByEmail(req.body.email)
+	if (req.body && req.body.email && req.body.password) {
+		const { email, password } = req.body
+		const user = await userService.getUserByEmail(email)
 		if (!user) {
-			const token = await auth.createToken(req, res, next)
-			res.set('Authorization', token)
-			res.status(200).json({ message: 'You were registered successfully' })
+			try {
+				await userService.createUser(email, password)
+				res.status(201).json({ message: 'You were registered successfully' })
+			} catch (err) {
+				next(err)
+			}
 		} else {
 			const err = new Error('This user is already registered')
 			err.status = 409
@@ -26,16 +30,13 @@ router.post('/register', bodyParser.json(), bodyParser.urlencoded({ extended: fa
 		err.status = 403
 		next(err)
 	}
-}) 
-
-router.use('/login', (req, res, next) => { 
-	auth.checkToken(req, res, next) 
 })
 
 router.post('/login', bodyParser.json(), bodyParser.urlencoded({ extended: false }), async (req, res, next) => {
 	if (req.body && req.body.email && req.body.password) {
-		const user = await userService.getUserByEmail(req.body.email)
-		const passwordHash = crypto.pbkdf2Sync(req.body.password, SALT, 1000, 64, 'sha512').toString('hex')
+		const { email, password } = req.body
+		const user = await userService.getUserByEmail(email)
+		const passwordHash = crypto.pbkdf2Sync(password, SALT, 1000, 64, 'sha512').toString('hex')
 		if (!user) {
 			const err = new Error('Cannot find user with this email')
 			err.status = 409
@@ -45,17 +46,54 @@ router.post('/login', bodyParser.json(), bodyParser.urlencoded({ extended: false
 			err.status = 409
 			next(err)
 		} else {
-			res.status(200).json({ message: 'Log in succeeded', data: { userId: req.userId } })
+			const token = await auth.createToken(email)
+			res.set('Authorization', token)
+			res.status(200).json({ message: 'Log in succeeded', data: { userId: user.userId } })
 		}
 	} else {
-		const err = new Error('Either no email or password was provided')
+		const err = new Error('Either email or password was not provided')
 		err.status = 403
 		next(err)
 	}
 })
 
-router.get('/profile/:id', (req, res) => {
-	res.json(`My profile ID is ${req.params.id}`)
+router.use('/profile', (req, res, next) => { 
+	auth.checkToken(req, res, next)
+})
+
+router.get('/profile/:id', async (req, res, next) => {
+	const user = await userService.getUserById(req.params.id)
+	if (user) {
+		res.status(200).json(user)
+	} else {
+		const err = new Error('There is no such a profile')
+		err.status = 404
+		next(err)
+	}
+})
+
+router.post('/profile/addWatchLater', bodyParser.json(), bodyParser.urlencoded({ extended: false }), async (req, res, next) => {
+	if (req.body && req.body.userId && req.body.movieId) {
+		const { userId, movieId } = req.body
+		await userService.addMovieToWatch(userId, movieId)
+		res.status(200).json('Added successfully') 
+	} else {
+		const err = new Error('Either user id or movie id was not provided')
+		err.status = 403
+		next(err)
+	}
+})
+
+router.post('/profile/removeWatchLater', bodyParser.json(), bodyParser.urlencoded({ extended: false }), async (req, res, next) => {
+	if (req.body && req.body.userId && req.body.movieId) {
+		const { userId, movieId } = req.body
+		await userService.removeMovieToWatch(userId, movieId)
+		res.status(200).json('Removed successfully')  
+	} else {
+		const err = new Error('Either user id or movie id was not provided')
+		err.status = 403
+		next(err)
+	}
 })
 
 router.get('/movies/top', async (req, res, next) => {
