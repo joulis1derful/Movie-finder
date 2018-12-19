@@ -15,27 +15,26 @@ const findMovieByName = async (req, res, next) => {
 	} else {
 		const movies = await storage.findMovies(name)
 		if (movies.length > 0) {
-			return res.json(movies)
+			return movies
 		}
 		return axios.get(`${SEARCH_MOVIES_URL}?api_key=${API_KEY}&query=${name}`)
-			.then((response) => { res.json(response.data.results) })
+			.then((response) => { return response.data.results })
 			.catch(err => next(err))
 	}
 }
 
-const findMovieById = async (req, res, next) => {
-	const { id } = req.params
+const findMovieById = async (id, next) => {
 	const regexp = /^\d+$/
 	if (id && regexp.test(id)) {
 		const movie = await storage.findMovie(id)
 		if (movie) {
-			return res.json(movie)
+			return movie
 		} 
-		await axios.get(`${TMDB_MOVIE_URL}/${id}?api_key=${API_KEY}`)
+		return await axios.get(`${TMDB_MOVIE_URL}/${id}?api_key=${API_KEY}`)
 			.then((response) => { 
 				const foundMovie = response.data
 				storage.insertMovie(foundMovie)
-				res.json(foundMovie) 
+				return foundMovie
 			})
 			.catch(err => next(err) )
 	} else {
@@ -47,7 +46,7 @@ const findMovieById = async (req, res, next) => {
 
 const getTopMovies = async (req, res, next) => {
 	return axios.get(`${TMDB_MOVIE_URL}/top_rated?api_key=${API_KEY}`)
-		.then((response) => { return res.json(response.data) })
+		.then((response) => { return response.data })
 		.catch((err) => { next(err) })
 }
 

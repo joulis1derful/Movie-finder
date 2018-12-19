@@ -1,5 +1,6 @@
 const config = require('../../shared/config')
 const mongoClient = require('mongodb').MongoClient
+const movieService = require('../../service/movie')
 
 const dbUrl = config('DB_URL')
 const dbName = config('DB_NAME')
@@ -14,13 +15,20 @@ const updateMoviesToWatch = async (userId, movieId, operation) => {
 		const user = await db.collection('user').findOne({ userId: parseInt(userId) })
 		const moviesCollection = user.movies_to_watch ? user.movies_to_watch : []
 		if (operation === 'add') {
-			if (moviesCollection.includes(movieNumber)) {
-				return
-			}
-			moviesCollection.push(movieNumber)
+			moviesCollection.forEach((movie) => {
+				if (movie && movie.id === movieNumber) {
+					return
+				}
+			})
+			const movie = await movieService.findMovieById(movieNumber)
+			moviesCollection.push(movie)
 		} else if (operation === 'remove') {
-			const indexToRemove = moviesCollection.indexOf(movieNumber)
-			if (indexToRemove !== -1) moviesCollection.splice(indexToRemove, 1)
+			moviesCollection.forEach((movie, index) => {
+				if (movie && movie.id === movieNumber) {
+					moviesCollection.splice(index, 1)
+					return
+				}
+			})
 		}
 		await db.collection('user').updateOne({ userId: parseInt(userId) }, { $set: { movies_to_watch: moviesCollection } })
 	} catch (err) {

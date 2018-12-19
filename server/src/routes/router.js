@@ -64,7 +64,7 @@ router.use('/profile', (req, res, next) => {
 router.get('/profile/:id', async (req, res, next) => {
 	const user = await userService.getUserById(req.params.id)
 	if (user) {
-		res.status(200).json(user)
+		res.status(200).json({ userId: user.userId, email: user.email, watch_later: user.movies_to_watch })
 	} else {
 		const err = new Error('There is no such a profile')
 		err.status = 404
@@ -97,15 +97,22 @@ router.post('/profile/removeWatchLater', bodyParser.json(), bodyParser.urlencode
 })
 
 router.get('/movies/top', async (req, res, next) => {
-	await movieService.getTopMovies(req, res, next)
+	const movies = await movieService.getTopMovies(req, res, next)
+
+	res.status(200).json(movies)
 })
 
 router.get('/movies/search', async (req, res, next) => {
-	await movieService.findMovieByName(req, res, next)
+	const movies = await movieService.findMovieByName(req, res, next)
+
+	res.status(200).json(movies)
 })
 
 router.get('/movies/:id', async (req, res, next) => {
-	await movieService.findMovieById(req, res, next)
+	const { id } = req.params
+	const movie = await movieService.findMovieById(id, next)
+
+	res.status(200).json(movie)
 })
 
 router.use((err, req, res, next) => {

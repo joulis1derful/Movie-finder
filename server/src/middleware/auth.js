@@ -1,7 +1,6 @@
 const config = require('../shared/config')
 const jwt = require('jsonwebtoken')
 const userService = require('../service/user')
-
 const JWT_SECRET = config('JWT_SECRET')
 
 const createToken = async (email) => {
