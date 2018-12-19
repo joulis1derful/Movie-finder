@@ -44,8 +44,9 @@ const findMovieById = async (id, next) => {
 	}  
 }
 
-const getTopMovies = async (req, res, next) => {
-	return axios.get(`${TMDB_MOVIE_URL}/top_rated?api_key=${API_KEY}`)
+const getTopMovies = async (next, page) => {
+	let link = page ? `${TMDB_MOVIE_URL}/top_rated?page=${page}&api_key=${API_KEY}` : `${TMDB_MOVIE_URL}/top_rated?api_key=${API_KEY}`
+	return axios.get(link)
 		.then((response) => { return response.data })
 		.catch((err) => { next(err) })
 }

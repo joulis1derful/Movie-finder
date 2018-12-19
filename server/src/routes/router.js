@@ -97,7 +97,8 @@ router.post('/profile/removeWatchLater', bodyParser.json(), bodyParser.urlencode
 })
 
 router.get('/movies/top', async (req, res, next) => {
-	const movies = await movieService.getTopMovies(req, res, next)
+	const { page } = req.query
+	const movies = await movieService.getTopMovies(next, page)
 
 	res.status(200).json(movies)
 })
