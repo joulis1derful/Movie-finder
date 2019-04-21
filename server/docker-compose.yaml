@@ -12,8 +12,10 @@ services:
       - API_KEY=52cc54558595d4caee5f1c68a7e7396f
       - SEARCH_MOVIES_URL=https://api.themoviedb.org/3/search/movie
       - TMDB_MOVIE_URL=https://api.themoviedb.org/3/movie
+      - REDIS_URL=redis://redis:6379
     depends_on:
-      - mongodb  
+      - mongodb
+      - redis  
 
   mongodb:
     image: mongo:4.0.4
@@ -26,4 +28,11 @@ services:
     ports:
       - 27017:27017
 
-    
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./data/redis

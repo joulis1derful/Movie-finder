@@ -32,6 +32,11 @@ const definitions = {
 		format: String,
 		default: 'mongodb://localhost:27017',
 	},
+	REDIS_URL: {
+		env: 'REDIS_URL',
+		format: String,
+		default: 'redis://localhost:6379'
+	},
 	DB_NAME: {
 		env: 'DB_NAME',
 		format: String,
