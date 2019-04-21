@@ -8,8 +8,8 @@ const APP_PORT = config('APP_PORT')
 
 const app = express()
 app.use(cors({ exposedHeaders: 'Authorization' }))
-app.use(routes.setupRoutes)
 app.use(bodyParser.json(), bodyParser.urlencoded({ extended: false }))
+app.use(routes())
  
 app.listen(APP_PORT, () => {
 	console.log('Server is listening on port ' + APP_PORT)

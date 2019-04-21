@@ -17,7 +17,7 @@ const setupRoutes = () => {
 
 	router.use('/profile', authMiddleware.checkToken)
   
-	router.get('/profile/:id', profile.post)
+	router.get('/profile/:id', profile.getById)
 	router.post('/profile/addWatchLater', profile.addWatchLater)
 	router.post('/profile/removeWatchLater', profile.removeWatchLater)
    
