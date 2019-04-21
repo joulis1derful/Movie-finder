@@ -2,51 +2,79 @@
 import axios from 'axios'
 export default {
   name: 'login',
-  components: {
-  },
+  components: {},
   data: function() {
     return {
       inputEmail: '',
-      inputPassword: ''
+      inputPassword: '',
     }
   },
   methods: {
-    handleSubmit: function (email, password) {
+    handleSubmit: function(email, password) {
       if (!email || !password) {
         alert('Please fill all the fields')
         return
       }
 
-      axios.post('http://localhost:3000/register', { email, password })
-        .then((response) => {
+      axios
+        .post('http://localhost:3000/register', { email, password })
+        .then(response => {
           sessionStorage.setItem('jwt', response.headers.authorization)
           this.$router.push('/login')
         })
-        .catch((err) => {
-          if (err.response.status === 409 && err.response.data.search(/cannot find user/i) !== -1) {
+        .catch(err => {
+          if (
+            err.response.status === 409 &&
+            err.response.data.search(/cannot find user/i) !== -1
+          ) {
             alert('No such user was found')
-          } else if (err.response.status === 409 && err.response.data.search(/invalid password/i) !== -1) {
-            alert(`${err.response.data}. Please, check your password and try once again`)
+          } else if (
+            err.response.status === 409 &&
+            err.response.data.search(/invalid password/i) !== -1
+          ) {
+            alert(
+              `${
+                err.response.data
+              }. Please, check your password and try once again`
+            )
           } else {
             alert('Something went wrong. Please try again')
           }
         })
     },
-
-  }
+  },
 }
 </script>
 
 
 <template>
+
   <body class="text-center">
     <form class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">Sign up page</h1>
       <label class="sr-only">Email address</label>
-      <input v-model="inputEmail" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <input
+        v-model="inputEmail"
+        type="email"
+        id="inputEmail"
+        class="form-control"
+        placeholder="Email address"
+        required
+        autofocus
+      >
       <label class="sr-only">Password</label>
-      <input v-model="inputPassword" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <button class="btn btn-lg btn-primary btn-block" @click.prevent="handleSubmit(inputEmail, inputPassword)">Sign in</button>
+      <input
+        v-model="inputPassword"
+        type="password"
+        id="inputPassword"
+        class="form-control"
+        placeholder="Password"
+        required
+      >
+      <button
+        class="btn btn-lg btn-primary btn-block"
+        @click.prevent="handleSubmit(inputEmail, inputPassword)"
+      >Sign in</button>
     </form>
   </body>
 </template>
@@ -85,16 +113,15 @@ body {
 .form-signin .form-control:focus {
   z-index: 2;
 }
-.form-signin input[type="email"] {
+.form-signin input[type='email'] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.form-signin input[type="password"] {
+.form-signin input[type='password'] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-
 </style>
 

@@ -8,14 +8,14 @@ export default {
   name: 'movie',
   components: {
     MoviesList,
-    MovieDetails
+    MovieDetails,
   },
   data: function() {
     return {
       movies: [],
       searchText: '',
       isDetailedInfoShown: false,
-      isSubmitted: false
+      isSubmitted: false,
     }
   },
   created: function() {
@@ -32,43 +32,62 @@ export default {
     }
   },
   methods: {
-    handleSubmit: function (searchText) {
+    handleSubmit: function(searchText) {
       this.isDetailedInfoShown = false
-      axios.get('http://localhost:3000/movies/search?name=' + searchText)
-        .then((response) => {
+      axios
+        .get('http://localhost:3000/movies/search?name=' + searchText)
+        .then(response => {
           this.isSubmitted = true
           this.movies = response.data
           this.searchText = ''
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err)
         })
     },
 
-    handleOpenDetailedInfo: function () {
+    handleOpenDetailedInfo: function() {
       this.isDetailedInfoShown = true
     },
 
     getMovieIdFromSessionStorage: function() {
       return sessionStorage.getItem('movieId')
-    }
-  }
+    },
+  },
 }
 </script>
 
 
 <template>
-    <div id="app">
-      <div v-if="!isSubmitted && !isDetailedInfoShown" class="container">
-        <div class="jumbotron">
-          <h3 class="text-center">Search for any movie</h3>
-          <form id="searchForm" @submit.prevent="handleSubmit(searchText)">
-            <input type="text" class="form-control" v-model="searchText" placeholder="Enter a movie to find info about">
-          </form>
-        </div>
+  <div id="app">
+    <div
+      v-if="!isSubmitted && !isDetailedInfoShown"
+      class="container"
+    >
+      <div class="jumbotron">
+        <h3 class="text-center">Search for any movie</h3>
+        <form
+          id="searchForm"
+          @submit.prevent="handleSubmit(searchText)"
+        >
+          <input
+            type="text"
+            class="form-control"
+            v-model="searchText"
+            placeholder="Enter a movie to find info about"
+          >
+        </form>
       </div>
+    </div>
 
-      <MoviesList v-if="isSubmitted && !isDetailedInfoShown" :movies="movies" @isClosed="handleOpenDetailedInfo"/>
-      <MovieDetails v-if="isDetailedInfoShown" :id="getMovieIdFromSessionStorage()" />
+    <MoviesList
+      v-if="isSubmitted && !isDetailedInfoShown"
+      :movies="movies"
+      @isClosed="handleOpenDetailedInfo"
+    />
+    <MovieDetails
+      v-if="isDetailedInfoShown"
+      :id="getMovieIdFromSessionStorage()"
+    />
   </div>
 </template>

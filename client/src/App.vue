@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'App'
+  name: 'App',
 }
 localStorage.setItem('secret', 'shhhared-secret')
 </script>
