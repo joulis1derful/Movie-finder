@@ -32,7 +32,7 @@ const updateMoviesToWatch = async (userId, movieId, operation) => {
 		}
 		await db.collection('user').updateOne({ userId: parseInt(userId) }, { $set: { movies_to_watch: moviesCollection } })
 	} catch (err) {
-		console.log(err)
+		throw err
 	} finally {
 		client.close()
 	}
@@ -46,7 +46,7 @@ const createUser = async (email, password) => {
 		await db.collection('user').insertOne({ email, password, userId: recordsLength + 1, movies_to_watch: [] })
 		return recordsLength + 1
 	} catch (err) {
-		console.log(err)
+		throw err
 	} finally {
 		client.close()
 	}	
@@ -59,7 +59,7 @@ const findUserByEmail = async (email) => {
 		const user = await database.collection('user').findOne({ email })
 		return user
 	} catch (err) {
-		console.log(err)
+		throw err
 	} finally {
 		client.close()
 	}
@@ -72,7 +72,7 @@ const findUserById = async (id) => {
 		const user = await db.collection('user').findOne({ userId: parseInt(id) })
 		return user
 	} catch (err) {
-		console.log(err)
+		throw err
 	} finally {
 		client.close()
 	}
@@ -82,8 +82,7 @@ const getConnection = async (url) => {
 	try {
 		return await mongoClient.connect(url, { useNewUrlParser: true })
 	} catch (err) {
-		// log.err
-		console.log(err)
+		throw err
 	}
 }
 

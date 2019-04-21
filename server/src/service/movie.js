@@ -6,12 +6,11 @@ const API_KEY = config('API_KEY')
 const SEARCH_MOVIES_URL = config('SEARCH_MOVIES_URL')
 const TMDB_MOVIE_URL = config('TMDB_MOVIE_URL')
 
-const findMovieByName = async (req, res, next) => {
-	const { name } = req.query
+const findMovieByName = async (name) => {
 	if (!name) {
 		const error = new Error('Invalid movie name was passed in')
 		error.status = 403
-		next(error)
+		throw error
 	} else {
 		const movies = await storage.findMovies(name)
 		if (movies.length > 0) {
@@ -19,11 +18,11 @@ const findMovieByName = async (req, res, next) => {
 		}
 		return axios.get(`${SEARCH_MOVIES_URL}?api_key=${API_KEY}&query=${name}`)
 			.then((response) => { return response.data.results })
-			.catch(err => next(err))
+			.catch(err => { throw err })
 	}
 }
 
-const findMovieById = async (id, next) => {
+const findMovieById = async (id) => {
 	const regexp = /^\d+$/
 	if (id && regexp.test(id)) {
 		const movie = await storage.findMovie(id)
@@ -36,19 +35,19 @@ const findMovieById = async (id, next) => {
 				storage.insertMovie(foundMovie)
 				return foundMovie
 			})
-			.catch(err => next(err) )
+			.catch(err => { throw err } )
 	} else {
 		const error = new Error('Invalid movie id was passed in')
 		error.status = 403
-		next(error)
+		throw error
 	}  
 }
 
-const getTopMovies = async (next, page) => {
+const getTopMovies = async (page) => {
 	let link = page ? `${TMDB_MOVIE_URL}/top_rated?page=${page}&api_key=${API_KEY}` : `${TMDB_MOVIE_URL}/top_rated?api_key=${API_KEY}`
 	return axios.get(link)
 		.then((response) => { return response.data })
-		.catch((err) => { next(err) })
+		.catch((err) => { throw err })
 }
 
 module.exports = {

@@ -12,7 +12,7 @@ const insertMovie = async (movie) => {
 		const db = client.db(dbName)
 		await db.collection('movie').insertOne(movie)
 	} catch (err) {
-		console.log(err)
+		throw err
 	} finally {
 		client.close()
 	}
@@ -25,7 +25,7 @@ const findMovies = async (name) => {
 		const movies = await database.collection('movie').find({ name: name }).toArray()
 		return movies
 	} catch (err) {
-		console.log(err)
+		throw err
 	} finally {
 		client.close()
 	}	
@@ -38,7 +38,7 @@ const findMovie = async (id) => {
 		const movie = await db.collection('movie').findOne({ id: parseInt(id) })
 		return movie
 	} catch (err) {
-		console.log(err)
+		throw err
 	} finally {	
 		client.close()
 	}
@@ -48,8 +48,7 @@ const getConnection = async (url) => {
 	try {
 		return await mongoClient.connect(url, { useNewUrlParser: true })
 	} catch (err) {
-		// log.err
-		console.log(err)
+		throw err
 	}
 }
 
