@@ -20,6 +20,7 @@ export default {
         .post('http://localhost:3000/login', { email, password })
         .then(response => {
           sessionStorage.setItem('jwt', response.headers.authorization)
+          sessionStorage.setItem('userId', response.data.profile.userId)
           this.$router.push('/')
         })
         .catch(err => {

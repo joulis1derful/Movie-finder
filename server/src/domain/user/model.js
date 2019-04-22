@@ -38,12 +38,12 @@ const updateMoviesToWatch = async (userId, movieId, operation) => {
 	}
 }
 
-const createUser = async (email, password) => {
+const createUser = async (email, password, firstName, lastName) => {
 	const client = await getConnection(dbUrl)
 	try {
 		const db = client.db(dbName)
 		const recordsLength = await db.collection('user').countDocuments()
-		await db.collection('user').insertOne({ email, password, userId: recordsLength + 1, movies_to_watch: [] })
+		await db.collection('user').insertOne({ email, password, firstName, lastName, userId: recordsLength + 1, movies_to_watch: [] })
 		return recordsLength + 1
 	} catch (err) {
 		throw err

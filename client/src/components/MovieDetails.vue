@@ -77,7 +77,6 @@ export default {
             <li class="list-group-item"><strong>Companies</strong>: {{ getProductionCompanies() }}</li>
             <li class="list-group-item"><strong>Countries</strong>: {{ getProductionCountries() }}</li>
             <li class="list-group-item"><strong>Budget</strong>: {{'$'+movie.budget}}</li>
-
           </ul>
         </div>
         <div class="col-md-12">

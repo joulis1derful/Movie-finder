@@ -9,11 +9,11 @@ const REDIS_URL = config('REDIS_URL')
 
 const register = async (req, res, next) => {
 	if (req.body && req.body.email && req.body.password) {
-		const { email, password } = req.body
+		const { email, password, firstName, lastName } = req.body
 		const user = await userService.getUserByEmail(email)
 		if (!user) {
 			try {
-				await userService.createUser(email, password)
+				await userService.createUser(email, password, firstName, lastName)
 				res.status(201).json({ message: 'You were registered successfully' })
 			} catch (err) {
 				next(err)
@@ -51,7 +51,7 @@ const login = async (req, res, next) => {
 			}
 			redis.close(client)
 			res.set('Authorization', token)
-			res.status(200).json({ message: 'Log in succeeded', data: { userId: user.userId } })
+			res.status(200).json({ message: 'Log in succeeded', profile: { userId: user.userId } })
 		}
 	} else {
 		const err = new Error('Either email or password was not provided')

@@ -7,17 +7,19 @@ export default {
     return {
       inputEmail: '',
       inputPassword: '',
+      firstName: '',
+      lastName: ''
     }
   },
   methods: {
-    handleSubmit: function(email, password) {
+    handleSubmit: function(email, password, firstName, lastName) {
       if (!email || !password) {
         alert('Please fill all the fields')
         return
       }
 
       axios
-        .post('http://localhost:3000/register', { email, password })
+        .post('http://localhost:3000/register', { email, password, firstName, lastName })
         .then(response => {
           sessionStorage.setItem('jwt', response.headers.authorization)
           this.$router.push('/login')
@@ -52,6 +54,22 @@ export default {
   <body class="text-center">
     <form class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">Sign up page</h1>
+      <label class="sr-only">First name</label>
+      <input
+        v-model="firstName"
+        id="inputFirstName"
+        class="form-control"
+        placeholder="First name"
+        required
+      >
+      <label class="sr-only">Last Name</label>
+      <input
+        v-model="lastName"
+        id="inputLastName"
+        class="form-control"
+        placeholder="Last name"
+        required
+      >
       <label class="sr-only">Email address</label>
       <input
         v-model="inputEmail"
@@ -73,8 +91,8 @@ export default {
       >
       <button
         class="btn btn-lg btn-primary btn-block"
-        @click.prevent="handleSubmit(inputEmail, inputPassword)"
-      >Sign in</button>
+        @click.prevent="handleSubmit(inputEmail, inputPassword, firstName, lastName)"
+      >Sign up</button>
     </form>
   </body>
 </template>

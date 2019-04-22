@@ -19,10 +19,10 @@ const removeMovieToWatch = async (userId, movieId) => {
 	return storage.updateMoviesToWatch(userId, movieId, 'remove')
 }
 
-const createUser = async (email, password) => {
+const createUser = async (email, password, firstName, lastName) => {
 	const passwordHash = crypto.pbkdf2Sync(password, SALT, 1000, 64, 'sha512').toString('hex')
 
-	return storage.createUser(email, passwordHash)
+	return storage.createUser(email, passwordHash, firstName, lastName)
 }
 
 module.exports = {

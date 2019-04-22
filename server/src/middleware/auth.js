@@ -23,7 +23,6 @@ const checkToken = (req, res, next) => {
 		// Remove Bearer from string
 		token = token.slice(7, token.length)
 	}
-
 	if (token) {
 		jwt.verify(token, JWT_SECRET, (err, decoded) => {
 			if (err) {	

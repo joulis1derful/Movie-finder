@@ -16,6 +16,7 @@ export default {
       searchText: '',
       isDetailedInfoShown: false,
       isSubmitted: false,
+      user: {},
     }
   },
   created: function() {
@@ -30,6 +31,19 @@ export default {
     } else {
       return this.$router.push('/login')
     }
+  },
+  mounted: function() {
+    const userId = this.getUserId()
+    axios
+      .get('http://localhost:3000/profile/' + userId, {
+        headers: { authorization: sessionStorage.getItem('jwt') },
+      })
+      .then(response => {
+        this.user = response.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   methods: {
     handleSubmit: function(searchText) {
@@ -50,8 +64,21 @@ export default {
       this.isDetailedInfoShown = true
     },
 
+    handleMovieChange: function(movies) {
+      this.movies = movies
+    },
+
     getMovieIdFromSessionStorage: function() {
       return sessionStorage.getItem('movieId')
+    },
+
+    getUserId: function() {
+      return sessionStorage.getItem('userId')
+    },
+
+    buildProfileLink: function() {
+      const userId = this.getUserId()
+      return `/profile/${userId}`
     },
   },
 }
@@ -60,6 +87,21 @@ export default {
 
 <template>
   <div id="app">
+    <nav class="navbar navbar-expand-sm">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            :href="buildProfileLink()"
+          >
+            <img
+              src="../assets/profile.png"
+              style="height: 48px;"
+            />
+          </a>
+        </li>
+      </ul>
+    </nav>
     <div
       v-if="!isSubmitted && !isDetailedInfoShown"
       class="container"
@@ -83,7 +125,9 @@ export default {
     <MoviesList
       v-if="isSubmitted && !isDetailedInfoShown"
       :movies="movies"
+      :user="user"
       @isClosed="handleOpenDetailedInfo"
+      @onMovieChange="handleMovieChange"
     />
     <MovieDetails
       v-if="isDetailedInfoShown"
@@ -91,3 +135,9 @@ export default {
     />
   </div>
 </template>
+<style>
+.navbar-nav {
+  margin-left: 45%;
+}
+</style>
+
