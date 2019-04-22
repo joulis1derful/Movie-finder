@@ -1,7 +1,7 @@
 <script>
 import axios from 'axios'
 export default {
-  name: 'login',
+  name: 'Login',
   components: {},
   data: function() {
     return {
@@ -26,14 +26,14 @@ export default {
         .catch(err => {
           if (
             err.response.status === 409 &&
-            err.response.data.search(/cannot find user/i) !== -1
+            err.response.data.message.search(/cannot find user/i) !== -1
           ) {
             alert('No such a user was found')
           } else if (
             err.response.status === 409 &&
-            err.response.data.search(/invalid password/i) !== -1
+            err.response.data.message.search(/invalid password/i) !== -1
           ) {
-            alert(`${err.response.data}. Please, try once again`)
+            alert(`${err.response.data.message}. Please, try once again`)
           } else {
             alert('Something went wrong. Please try again')
           }
@@ -88,7 +88,6 @@ body {
   justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #f5f5f5;
 }
 
 .form-signin {

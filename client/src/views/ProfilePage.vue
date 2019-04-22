@@ -4,7 +4,7 @@ import MovieDetails from '@/components/MovieDetails.vue'
 import axios from 'axios'
 
 export default {
-  name: 'profile',
+  name: 'Profile',
   components: {
     MoviesList,
     MovieDetails,

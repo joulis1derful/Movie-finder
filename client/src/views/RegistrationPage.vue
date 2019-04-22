@@ -1,7 +1,7 @@
 <script>
 import axios from 'axios'
 export default {
-  name: 'login',
+  name: 'Registration',
   components: {},
   data: function() {
     return {
@@ -109,7 +109,6 @@ body {
   justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #f5f5f5;
 }
 
 .form-signin {
@@ -126,6 +125,7 @@ body {
   box-sizing: border-box;
   height: auto;
   padding: 10px;
+  margin-bottom: 10px;
   font-size: 16px;
 }
 .form-signin .form-control:focus {

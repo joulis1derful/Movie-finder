@@ -5,7 +5,7 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 
 export default {
-  name: 'movie',
+  name: 'Movie',
   components: {
     MoviesList,
     MovieDetails,
@@ -94,7 +94,7 @@ export default {
             class="nav-link"
             :href="buildProfileLink()"
           >
-            <img
+            <img v-show="!isDetailedInfoShown"
               src="../assets/profile.png"
               style="height: 48px;"
             />
@@ -137,7 +137,7 @@ export default {
 </template>
 <style>
 .navbar-nav {
-  margin-left: 45%;
+  margin-left: 48%;
 }
 </style>
 
