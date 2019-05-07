@@ -8,7 +8,7 @@ export default {
       inputEmail: '',
       inputPassword: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
     }
   },
   methods: {
@@ -19,7 +19,12 @@ export default {
       }
 
       axios
-        .post('http://localhost:3000/register', { email, password, firstName, lastName })
+        .post('http://localhost:3000/register', {
+          email,
+          password,
+          firstName,
+          lastName,
+        })
         .then(response => {
           sessionStorage.setItem('jwt', response.headers.authorization)
           this.$router.push('/login')
@@ -50,11 +55,9 @@ export default {
 
 
 <template>
-
-  <body class="text-center">
+  <div class="container">
     <form class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Sign up page</h1>
-      <label class="sr-only">First name</label>
+      <h1>Sign up page</h1>
       <input
         v-model="firstName"
         id="inputFirstName"
@@ -62,7 +65,6 @@ export default {
         placeholder="First name"
         required
       >
-      <label class="sr-only">Last Name</label>
       <input
         v-model="lastName"
         id="inputLastName"
@@ -70,7 +72,6 @@ export default {
         placeholder="Last name"
         required
       >
-      <label class="sr-only">Email address</label>
       <input
         v-model="inputEmail"
         type="email"
@@ -80,7 +81,6 @@ export default {
         required
         autofocus
       >
-      <label class="sr-only">Password</label>
       <input
         v-model="inputPassword"
         type="password"
@@ -90,56 +90,73 @@ export default {
         required
       >
       <button
-        class="btn btn-lg btn-primary btn-block"
+        class="btn-primary"
         @click.prevent="handleSubmit(inputEmail, inputPassword, firstName, lastName)"
       >Sign up</button>
     </form>
-  </body>
+  </div>
 </template>
 
 <style scoped>
-html,
-body {
-  height: 100%;
-}
-
-body {
+.container {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  align-items: center;
+  height: 100vh;
 }
 
 .form-signin {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   max-width: 330px;
-  padding: 15px;
+  width: 50%;
   margin: 0 auto;
 }
-.form-signin .checkbox {
-  font-weight: 400;
-}
+
 .form-signin .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
   padding: 10px;
-  margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 14px;
+  border: 1px solid #ced4da;
 }
+
 .form-signin .form-control:focus {
   z-index: 2;
 }
-.form-signin input[type='email'] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+
+.form-signin input {
+  width: 75%;
+  text-align: center;
 }
-.form-signin input[type='password'] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+
+.form-signin * {
+  margin: 3px;
+}
+
+.btn-primary {
+  width: 75%;
+  padding: 10px;
+  border-radius: 0.25rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  background-color: #007bff;
+  border-color: #007bff;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 2s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+  text-decoration: none;
+}
+
+.register-hint > a {
+  color: inherit;
+  font-size: 1rem;
 }
 </style>
 
