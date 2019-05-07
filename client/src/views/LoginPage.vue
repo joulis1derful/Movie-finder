@@ -45,79 +45,102 @@ export default {
 
 
 <template>
-
-  <body class="text-center">
+  <div class="root">
     <form class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label class="sr-only">Email address</label>
-      <input
-        v-model="inputEmail"
-        type="email"
-        id="inputEmail"
-        class="form-control"
-        placeholder="Email address"
-        required
-        autofocus
-      >
-      <label class="sr-only">Password</label>
-      <input
-        v-model="inputPassword"
-        type="password"
-        id="inputPassword"
-        class="form-control"
-        placeholder="Password"
-        required
-      >
-      <button
-        class="btn btn-lg btn-primary btn-block"
-        @click.prevent="handleSubmit(inputEmail, inputPassword)"
-      >Sign in</button>
+      <div class="inner-flex">
+        <h1>Please sign in</h1>
+        <input
+          v-model="inputEmail"
+          type="email"
+          id="inputEmail"
+          class="form-control"
+          placeholder="Email address"
+          required
+          autofocus
+        >
+        <input
+          v-model="inputPassword"
+          type="password"
+          id="inputPassword"
+          class="form-control"
+          placeholder="Password"
+          required
+        >
+        <span class="register-hint"><a href="/register">No account? Create it</a></span>
+        <button
+          class="btn-primary"
+          @click.prevent="handleSubmit(inputEmail, inputPassword)"
+        >Sign in</button>
+      </div>
     </form>
-  </body>
+  </div>
 </template>
 
 <style scoped>
-html,
-body {
-  height: 100%;
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-body {
+.inner-flex {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  align-items: center;
+}
+
+.inner-flex * {
+  margin: 3px;
 }
 
 .form-signin {
-  width: 100%;
   max-width: 330px;
-  padding: 15px;
+  width: 50%;
   margin: 0 auto;
+  /* background-color: gray; */
 }
-.form-signin .checkbox {
-  font-weight: 400;
-}
+
 .form-signin .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
   padding: 10px;
-  font-size: 16px;
+  font-size: 14px;
 }
+
 .form-signin .form-control:focus {
   z-index: 2;
 }
-.form-signin input[type='email'] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+
+.inner-flex input {
+  width: 75%;
+  text-align: center;
 }
-.form-signin input[type='password'] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+
+.inner-flex input::placeholder {
+  font-size: 14px;
+}
+
+.btn-primary {
+  padding: 10px 30px;
+  border-radius: .25rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  background-color: #28a745;
+  border-color: #28a745;
+  cursor: pointer;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow 2s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+  text-decoration: none;
+}
+
+.register-hint > a {
+  color: inherit;
+  font-size: 1rem;
 }
 </style>
 
