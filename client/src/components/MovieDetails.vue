@@ -56,11 +56,7 @@ export default {
 
 <template>
   <div class="container">
-    <div
-      v-if="movie"
-      id="movie"
-      class="well"
-    >
+    <div v-if="movie">
       <div class="row">
         <div class="col-md-4">
           <img
@@ -82,13 +78,10 @@ export default {
         <div class="col-md-12">
           <h3><strong>Overview</strong></h3>
           <hr>
-          <div
-            id="overview"
-            class="well"
-          >
+          <div class="overview">
             <h4>{{movie.overview}}</h4>
           </div>
-          <div class="well">
+          <div class="btn-group">
             <a
               :href="generateImdbLink()"
               target="_blank"
@@ -96,7 +89,7 @@ export default {
             >View on IMDB</a>
             <a
               href="/"
-              class="btn btn-default"
+              class="btn btn-back"
             >Go Back to Search</a>
           </div>
         </div>
@@ -105,4 +98,15 @@ export default {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.overview h4 {
+  font-size: 20px;
+  font-family: 'Times New Roman';
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

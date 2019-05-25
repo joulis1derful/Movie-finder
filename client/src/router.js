@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/views/LoginPage.vue'
-import Movie from '@/views/MoviePage.vue'
-import Register from '@/views/RegistrationPage.vue'
-import Profile from '@/views/ProfilePage.vue'
+import Login from '@/pages/LoginPage.vue'
+import Movie from '@/pages/MoviePage.vue'
+import Register from '@/pages/RegistrationPage.vue'
+import Profile from '@/pages/ProfilePage.vue'
 
 Vue.use(Router)
 

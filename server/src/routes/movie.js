@@ -11,9 +11,9 @@ const getTopMovies = async (req, res, next) => {
 }
 
 const findMovieByName = async (req, res, next) => {
-	const { name } = req.query
+	const { name, page } = req.query
 	try {
-		const movies = await movieService.findMovieByName(name)
+		const movies = await movieService.findMovieByName(name, page)
 		res.status(200).json(movies)
 	} catch (err) {
 		next(err)

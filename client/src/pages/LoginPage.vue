@@ -67,7 +67,7 @@ export default {
       >
       <span class="register-hint"><a href="/register">No account? Create it</a></span>
       <button
-        class="btn-primary"
+        class="btn btn-primary btn-login"
         @click.prevent="handleSubmit(inputEmail, inputPassword)"
       >Sign in</button>
     </form>
@@ -111,24 +111,8 @@ export default {
   margin: 3px;
 }
 
-.btn-primary {
+.btn-login {
   width: 75%;
-  padding: 10px;
-  border-radius: 0.25rem;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 400;
-  background-color: #007bff;
-  border-color: #007bff;
-  cursor: pointer;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 2s ease-in-out;
-}
-
-.btn-primary:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
-  text-decoration: none;
 }
 
 .register-hint > a {

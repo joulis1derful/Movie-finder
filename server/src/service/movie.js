@@ -6,7 +6,7 @@ const API_KEY = config('API_KEY')
 const SEARCH_MOVIES_URL = config('SEARCH_MOVIES_URL')
 const TMDB_MOVIE_URL = config('TMDB_MOVIE_URL')
 
-const findMovieByName = async (name) => {
+const findMovieByName = async (name, page) => {
 	if (!name) {
 		const error = new Error('Invalid movie name was passed in')
 		error.status = 403
@@ -16,8 +16,12 @@ const findMovieByName = async (name) => {
 		if (movies.length > 0) {
 			return movies
 		}
-		return axios.get(`${SEARCH_MOVIES_URL}?api_key=${API_KEY}&query=${name}`)
-			.then((response) => { return response.data.results })
+		let searchUrl = `${SEARCH_MOVIES_URL}?api_key=${API_KEY}&query=${name}`
+		if (page) {
+			searchUrl += `&page=${page}`
+		}
+		return axios.get(searchUrl)
+			.then((response) => { return { movies: response.data.results, totalPages: response.data.total_pages } })
 			.catch(err => { throw err })
 	}
 }

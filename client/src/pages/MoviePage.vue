@@ -17,6 +17,7 @@ export default {
       isDetailedInfoShown: false,
       isSubmitted: false,
       user: {},
+      pagesAmount: 1,
     }
   },
   created: function() {
@@ -52,8 +53,26 @@ export default {
         .get('http://localhost:3000/movies/search?name=' + searchText)
         .then(response => {
           this.isSubmitted = true
-          this.movies = response.data
-          this.searchText = ''
+          this.movies = response.data.movies
+          this.pagesAmount = response.data.totalPages
+          // this.searchText = ''
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
+    handlePageSelection: function(page) {
+      axios
+        .get(
+          `http://localhost:3000/movies/search?name=${
+            this.searchText
+          }&page=${page}`
+        )
+        .then(response => {
+          this.isSubmitted = true
+          this.movies = response.data.movies
+          this.pagesAmount = response.data.totalPages
         })
         .catch(err => {
           console.log(err)
@@ -87,27 +106,22 @@ export default {
 
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-sm">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            :href="buildProfileLink()"
-          >
-            <img v-show="!isDetailedInfoShown"
-              src="../assets/profile.png"
-              style="height: 48px;"
-            />
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <a
+      class="profile"
+      :href="buildProfileLink()"
+    >
+      <img
+        v-show="!isDetailedInfoShown"
+        src="../assets/profile.png"
+        style="height: 48px;"
+      />
+    </a>
     <div
       v-if="!isSubmitted && !isDetailedInfoShown"
-      class="container"
+      class="search-menu"
     >
-      <div class="jumbotron">
-        <h3 class="text-center">Search for any movie</h3>
+      <div>
+        <h3>Search for any movie</h3>
         <form
           id="searchForm"
           @submit.prevent="handleSubmit(searchText)"
@@ -126,8 +140,10 @@ export default {
       v-if="isSubmitted && !isDetailedInfoShown"
       :movies="movies"
       :user="user"
+      :totalPages="pagesAmount"
       @isClosed="handleOpenDetailedInfo"
       @onMovieChange="handleMovieChange"
+      @selectPage="handlePageSelection"
     />
     <MovieDetails
       v-if="isDetailedInfoShown"
@@ -136,8 +152,36 @@ export default {
   </div>
 </template>
 <style>
-.navbar-nav {
-  margin-left: 48%;
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.profile {
+  margin: 5% 5%;
+  align-self: flex-end;
+}
+
+.search-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.search-menu h3 {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 75%;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ced4da;
 }
 </style>
+
 

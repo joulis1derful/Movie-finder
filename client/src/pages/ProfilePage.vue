@@ -28,7 +28,13 @@ export default {
           headers: { authorization: sessionStorage.getItem('jwt') },
         })
         .then(response => {
-          const { userId, email, watchLater, firstName, lastName } = response.data
+          const {
+            userId,
+            email,
+            watchLater,
+            firstName,
+            lastName,
+          } = response.data
           this.user = { userId, email, watchLater, firstName, lastName }
           this.movies = watchLater
           this.isLoaded = true
@@ -53,47 +59,50 @@ export default {
 
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-md-12 details">
-        <blockquote>
-          <h5>{{ user.firstName }} {{ user.lastName }}</h5>
-        </blockquote>
-        <p>
-          {{ user.email }} <br>
-        </p>
-      </div>
-      <div class="col-md-12 movie-list">
-        <h3>Favourite movies</h3>
-        <MoviesList
-          v-if="isLoaded && !isDetailedInfoShown"
-          :movies="movies"
-          :user="user"
-          @isClosed="handleOpenDetailedInfo"
-          @onMovieChange="handleMovieChange"
-        />
-        <MovieDetails
-          v-if="isDetailedInfoShown"
-          :id="getMovieIdFromSessionStorage()"
-        />
-      </div>
+    <div class="details">
+      <blockquote>
+        <h5>{{ user.firstName }} {{ user.lastName }}</h5>
+      </blockquote>
+      <p>
+        {{ user.email }} <br>
+      </p>
+    </div>
+    <div class="movie-list">
+      <h3>Favourite movies</h3>
+      <MoviesList
+        v-if="isLoaded && !isDetailedInfoShown"
+        :movies="movies"
+        :user="user"
+        @isClosed="handleOpenDetailedInfo"
+        @onMovieChange="handleMovieChange"
+      />
+      <MovieDetails
+        v-if="isDetailedInfoShown"
+        :id="getMovieIdFromSessionStorage()"
+      />
     </div>
   </div>
 </template>
 
 <style scoped>
 .container {
-  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
+
 .container .details {
-  text-align: right;
+  align-self: flex-end;
 }
+
 .container .movie-list h3 {
+  font-size: 24px;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 30px;
 }
+
 .container .details p {
   font-size: 15px;
-  font-weight: bold;
 }
 </style>
 

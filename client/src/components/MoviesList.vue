@@ -6,9 +6,18 @@ export default {
   props: {
     movies: Array,
     user: Object,
+    totalPages: Number,
+  },
+  data: function() {
+    return {
+      prevPages: [],
+      nextPages: [],
+      currentPage: 1,
+    }
   },
   created: function() {
     this.filterWatchLaterMovies(this.movies)
+    this.applyPagination(this.currentPage, this.totalPages)
   },
   methods: {
     viewMovieDetails: function(id) {
@@ -60,6 +69,35 @@ export default {
         })
     },
 
+    handleSelectPage: function(page) {
+      this.$emit('selectPage', page)
+      this.currentPage = page
+      this.applyPagination(this.currentPage, this.totalPages)
+    },
+
+    applyPagination: function(curPage, totalPages) {
+      // TODO refactor later
+      const prevValues = []
+      const nextValues = []
+      const prevDiff = curPage - 2
+      const nextDiff = curPage + 2
+
+      if (prevDiff > 0) {
+        for (let i = curPage - 2; i < curPage && i > 1; i++) {
+          prevValues.push(i)
+        }
+      }
+
+      if (nextDiff <= totalPages) {
+        for (let i = curPage + 1; i <= curPage + 2 && i < totalPages; i++) {
+          nextValues.push(i)
+        }
+      }
+
+      this.prevPages = prevValues
+      this.nextPages = nextValues
+    },
+
     filterWatchLaterMovies: function(movies) {
       this.user.watchLater.forEach(watchLater => {
         movies.forEach(movie => {
@@ -75,45 +113,155 @@ export default {
 </script>
 
 <template>
-  <div class="hello">
-    <div class="container">
+  <div>
+    <div
+      id="movies"
+      class="list"
+    >
       <div
-        id="movies"
-        class="row"
+        v-for="movie in movies"
+        class="col-md-4"
       >
-        <div
-          v-for="movie in movies"
-          class="col-md-4"
-        >
-          <div class="well text-center">
-            <img :src="getImagePath(movie)">
-            <h5>{{movie.title}}</h5>
-            <div class="btn-group">
-              <button
-                @click="viewMovieDetails(movie.id)"
-                class="btn btn-primary"
-              >Movie details</button>
-              <button
-                v-if="!movie.isAdded"
-                @click="addToWatchLater(movie.id)"
-                class="btn btn-success"
-              >Add</button>
-              <button
-                v-if="movie.isAdded"
-                @click="removeFromWatchLater(movie.id)"
-                class="btn btn-danger"
-              >Remove
-              </button>
-            </div>
+        <div class="well">
+          <img :src="getImagePath(movie)">
+          <h5>{{movie.title}}</h5>
+          <div class="btn-group">
+            <button
+              @click="viewMovieDetails(movie.id)"
+              class="btn btn-primary"
+            >Movie details</button>
+            <button
+              v-if="!movie.isAdded"
+              @click="addToWatchLater(movie.id)"
+              class="btn btn-success"
+            >Add</button>
+            <button
+              v-if="movie.isAdded"
+              @click="removeFromWatchLater(movie.id)"
+              class="btn btn-danger"
+            >Remove
+            </button>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="footer">
+      <ul>
+        <a
+          href="/"
+          class="btn btn-back"
+        >Go Back to Search</a>
+      </ul>
+
+      <nav
+        v-if="totalPages <= 6"
+        class="pagination"
+      >
+        <ul v-for="n in totalPages">
+          <li class="page-item"><a
+              class="page-link"
+              @click="handleSelectPage(n)"
+            >{{ n }}</a></li>
+        </ul>
+      </nav>
+
+      <nav
+        v-else
+        class="pagination"
+      >
+        <ul v-if="currentPage !== 1">
+          <li class="page-item"><a
+              class="page-link"
+              @click="handleSelectPage(1)"
+            >1</a></li>
+        </ul>
+        <ul v-if="currentPage > 4">
+          <li class="dots"><a>...</a></li>
+        </ul>
+
+        <ul v-for="n in prevPages">
+          <li class="page-item"><a
+              class="page-link"
+              @click="handleSelectPage(n)"
+            >{{ n }}</a></li>
+        </ul>
+
+        <ul>
+          <li class="page-item"><a class="page-link current-page">{{ currentPage }}</a></li>
+        </ul>
+
+        <ul v-for="n in nextPages">
+          <li class="page-item"><a
+              class="page-link"
+              @click="handleSelectPage(n)"
+            >{{ n }}</a></li>
+        </ul>
+
+        <ul v-if="totalPages - currentPage > 2">
+          <li class="dots"><a>...</a></li>
+        </ul>
+        <ul v-if="currentPage !== totalPages">
+          <li class="page-item"><a
+              class="page-link"
+              @click="handleSelectPage(totalPages)"
+            >{{ totalPages }}</a></li>
+        </ul>
+      </nav>
     </div>
   </div>
 </template>
 
 <style scoped>
-.btn-group > button:first-child {
-  margin-right: 5px;
+.list {
+  display: flex;
+  flex-direction: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 5%;
+}
+
+.col-md-4 {
+  flex: 1 0 calc(33%);
+}
+
+.list img {
+  height: 500px;
+}
+
+.well h5 {
+  font-weight: 700;
+  font-size: 30px;
+  margin: auto;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 5%;
+}
+
+.page-item {
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.dots {
+  list-style-type: none;
+}
+
+.current-page {
+  color: #900060;
+}
+
+.page-link {
+  text-decoration: none;
 }
 </style>
