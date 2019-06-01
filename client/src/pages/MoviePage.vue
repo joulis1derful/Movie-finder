@@ -43,7 +43,7 @@ export default {
         this.user = response.data
       })
       .catch(err => {
-        console.log(err)
+        alert(`Could not get profile with user id ${userId}`)
       })
   },
   methods: {
@@ -58,7 +58,7 @@ export default {
           // this.searchText = ''
         })
         .catch(err => {
-          console.log(err)
+          alert(`Could not find movies with name ${name}`)
         })
     },
 
@@ -75,7 +75,7 @@ export default {
           this.pagesAmount = response.data.totalPages
         })
         .catch(err => {
-          console.log(err)
+          alert('Error during page switch. Please, try again')
         })
     },
 

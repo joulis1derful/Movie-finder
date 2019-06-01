@@ -18,7 +18,7 @@ export default {
         this.movie = response.data
       })
       .catch(err => {
-        console.log(err)
+        alert(`Could not fetch movie with id ${this.id}`)
       })
   },
   methods: {
@@ -58,13 +58,13 @@ export default {
   <div class="container">
     <div v-if="movie">
       <div class="row">
-        <div class="col-md-4">
+        <div class="movie-pic">
           <img
             :src="getFullPath()"
             class="thumbnail"
           >
         </div>
-        <div class="col-md-8">
+        <div class="movie-info">
           <h2>{{movie.title}}</h2>
           <ul class="list-group">
             <li class="list-group-item"><strong>Genre</strong>: {{ getGenres() }}</li>
@@ -75,10 +75,11 @@ export default {
             <li class="list-group-item"><strong>Budget</strong>: {{'$'+movie.budget}}</li>
           </ul>
         </div>
-        <div class="col-md-12">
+      </div>
+      <div class="overview">
           <h3><strong>Overview</strong></h3>
           <hr>
-          <div class="overview">
+          <div>
             <h4>{{movie.overview}}</h4>
           </div>
           <div class="btn-group">
@@ -93,12 +94,16 @@ export default {
             >Go Back to Search</a>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
 .overview h4 {
   font-size: 20px;
   font-family: 'Times New Roman';
@@ -108,5 +113,19 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.list-group > li {
+  word-wrap: break-word;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.movie-info {
+  align-self: center;
 }
 </style>

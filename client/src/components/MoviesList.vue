@@ -45,7 +45,7 @@ export default {
           this.$emit('onMovieChange', filteredMovies)
         })
         .catch(err => {
-          console.log(err)
+          alert('Could not add movie to watch later list')
         })
     },
     removeFromWatchLater: function(movieId) {
@@ -65,7 +65,7 @@ export default {
           this.$emit('onMovieChange', filteredMovies)
         })
         .catch(err => {
-          console.log(err)
+          alert('Could not remove movie from watch later list')
         })
     },
 

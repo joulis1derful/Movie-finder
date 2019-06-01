@@ -40,7 +40,7 @@ export default {
           this.isLoaded = true
         })
         .catch(err => {
-          console.log(err)
+          alert(`Could not load profile with user id ${userId}`)
         })
     },
     handleMovieChange: function(movies) {
