@@ -3,12 +3,16 @@ import MoviesList from '@/components/MoviesList.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import Message from '@/components/Message.vue'
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: 'Movie',
   components: {
     MoviesList,
     MovieDetails,
+    Message,
   },
   data: function() {
     return {
@@ -35,8 +39,9 @@ export default {
   },
   mounted: function() {
     const userId = this.getUserId()
-    axios
-      .get('http://localhost:3000/profile/' + userId, {
+    if (userId) {
+      axios
+      .get(`${SERVER_URL}/profile/${userId}`, {
         headers: { authorization: sessionStorage.getItem('jwt') },
       })
       .then(response => {
@@ -45,12 +50,13 @@ export default {
       .catch(err => {
         alert(`Could not get profile with user id ${userId}`)
       })
+    }
   },
   methods: {
     handleSubmit: function(searchText) {
       this.isDetailedInfoShown = false
       axios
-        .get('http://localhost:3000/movies/search?name=' + searchText)
+        .get(`${SERVER_URL}/movies/search?name=${searchText}`)
         .then(response => {
           this.isSubmitted = true
           this.movies = response.data.movies
@@ -65,7 +71,7 @@ export default {
     handlePageSelection: function(page) {
       axios
         .get(
-          `http://localhost:3000/movies/search?name=${
+          `${SERVER_URL}/movies/search?name=${
             this.searchText
           }&page=${page}`
         )
@@ -135,6 +141,8 @@ export default {
         </form>
       </div>
     </div>
+
+    <Message type="error" message="someError"></Message>
 
     <MoviesList
       v-if="isSubmitted && !isDetailedInfoShown"

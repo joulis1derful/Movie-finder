@@ -1,5 +1,8 @@
 <script>
 import axios from 'axios'
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
 export default {
   name: 'Login',
   components: {},
@@ -17,7 +20,7 @@ export default {
       }
 
       axios
-        .post('http://localhost:3000/login', { email, password })
+        .post(`${SERVER_URL}/login`, { email, password })
         .then(response => {
           sessionStorage.setItem('jwt', response.headers.authorization)
           sessionStorage.setItem('userId', response.data.profile.userId)

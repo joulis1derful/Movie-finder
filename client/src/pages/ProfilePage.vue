@@ -1,13 +1,17 @@
 <script>
 import MoviesList from '@/components/MoviesList.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
+import Message from '@/components/Message.vue'
 import axios from 'axios'
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: 'Profile',
   components: {
     MoviesList,
     MovieDetails,
+    Message,
   },
   data: function() {
     return {
@@ -24,7 +28,7 @@ export default {
   methods: {
     loadProfile: function(userId) {
       axios
-        .get('http://localhost:3000/profile/' + userId, {
+        .get(`${SERVER_URL}/profile/${userId}`, {
           headers: { authorization: sessionStorage.getItem('jwt') },
         })
         .then(response => {
@@ -59,6 +63,7 @@ export default {
 
 <template>
   <div class="container">
+    <Message type="success" message="hello"></Message>
     <div class="details">
       <blockquote>
         <h5>{{ user.firstName }} {{ user.lastName }}</h5>

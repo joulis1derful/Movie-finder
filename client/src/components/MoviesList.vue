@@ -1,6 +1,9 @@
 <script>
 import axios from 'axios'
 
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const IMAGE_PATH = process.env.VUE_APP_IMAGE_PATH_WIDTH_500
+
 export default {
   name: 'MoviesList',
   props: {
@@ -25,13 +28,13 @@ export default {
       this.$emit('isClosed')
     },
     getImagePath: function(movie) {
-      const imageUrl = 'https://image.tmdb.org/t/p/w500'
+      const imageUrl = IMAGE_PATH
       return `${imageUrl + movie.poster_path}`
     },
     addToWatchLater: function(movieId) {
       axios
         .post(
-          'http://localhost:3000/profile/addWatchLater',
+          `${SERVER_URL}/profile/addWatchLater`,
           { userId: this.user.userId, movieId },
           { headers: { authorization: sessionStorage.getItem('jwt') } }
         )
@@ -51,7 +54,7 @@ export default {
     removeFromWatchLater: function(movieId) {
       axios
         .post(
-          'http://localhost:3000/profile/removeWatchLater',
+          `${SERVER_URL}/profile/removeWatchLater`,
           { userId: this.user.userId, movieId },
           { headers: { authorization: sessionStorage.getItem('jwt') } }
         )

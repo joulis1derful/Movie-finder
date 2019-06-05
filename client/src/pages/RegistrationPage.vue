@@ -1,5 +1,8 @@
 <script>
 import axios from 'axios'
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
 export default {
   name: 'Registration',
   components: {},
@@ -19,7 +22,7 @@ export default {
       }
 
       axios
-        .post('http://localhost:3000/register', {
+        .post(`${SERVER_URL}/register`, {
           email,
           password,
           firstName,
