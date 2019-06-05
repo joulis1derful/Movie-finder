@@ -1,6 +1,10 @@
 <script>
 import axios from 'axios'
 
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const IMDB_URL = process.env.VUE_APP_IMDB_URL
+const IMAGE_PATH = process.env.VUE_APP_IMAGE_PATH_WIDTH_500
+
 export default {
   name: 'MovieDetails',
   props: {
@@ -13,7 +17,7 @@ export default {
   },
   created: function() {
     axios
-      .get('http://localhost:3000/movies/' + this.id)
+      .get(`${SERVER_URL}/movies/${this.id}`)
       .then(response => {
         this.movie = response.data
       })
@@ -23,7 +27,7 @@ export default {
   },
   methods: {
     getFullPath() {
-      const imageUrl = 'https://image.tmdb.org/t/p/w500'
+      const imageUrl = IMAGE_PATH
       return `${imageUrl}${this.movie.poster_path}`
     },
     getGenres() {
@@ -48,7 +52,7 @@ export default {
         .join(', ')
     },
     generateImdbLink() {
-      return `http://imdb.com/title/${this.movie.imdb_id}`
+      return `${IMDB_URL}/title/${this.movie.imdb_id}`
     },
   },
 }
@@ -104,21 +108,6 @@ export default {
   flex-direction: column;
 }
 
-.overview h4 {
-  font-size: 20px;
-  font-family: 'Times New Roman';
-}
-
-.list-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.list-group > li {
-  word-wrap: break-word;
-}
-
 .row {
   display: flex;
   flex-direction: row;
@@ -127,5 +116,21 @@ export default {
 
 .movie-info {
   align-self: center;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.list-group > li {
+  align-self: flex-start;
+  word-wrap: break-word;
+}
+
+.overview h4 {
+  font-size: 20px;
+  font-family: 'Times New Roman';
 }
 </style>
