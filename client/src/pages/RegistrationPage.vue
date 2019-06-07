@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import Message from '@/message'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -17,7 +18,10 @@ export default {
   methods: {
     handleSubmit: function(email, password, firstName, lastName) {
       if (!email || !password) {
-        alert('Please fill all the fields')
+        Message({
+          message: 'Please fill all the fields',
+          type: 'success',
+        })
         return
       }
 
@@ -37,18 +41,25 @@ export default {
             err.response.status === 409 &&
             err.response.data.search(/cannot find user/i) !== -1
           ) {
-            alert('No such user was found')
+            Message({
+              message: 'No such user was found',
+              type: 'error',
+            })
           } else if (
             err.response.status === 409 &&
             err.response.data.search(/invalid password/i) !== -1
           ) {
-            alert(
-              `${
+            Message({
+              message: `${
                 err.response.data
-              }. Please, check your password and try once again`
-            )
+              }. Please, check your password and try once again`,
+              type: 'error',
+            })
           } else {
-            alert('Something went wrong. Please try again')
+            Message({
+              message: 'Something went wrong. Please try again',
+              type: 'error',
+            })
           }
         })
     },

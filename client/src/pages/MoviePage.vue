@@ -3,7 +3,7 @@ import MoviesList from '@/components/MoviesList.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import Message from '@/components/Message.vue'
+import Message from '@/message'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -12,7 +12,6 @@ export default {
   components: {
     MoviesList,
     MovieDetails,
-    Message,
   },
   data: function() {
     return {
@@ -30,7 +29,10 @@ export default {
       try {
         jwt.verify(token, localStorage.getItem('secret'))
       } catch (error) {
-        alert('Token was not verified')
+        Message({
+          message: 'Token was not verified',
+          type: 'error',
+        })
         return this.$router.push('/login')
       }
     } else {
@@ -41,15 +43,18 @@ export default {
     const userId = this.getUserId()
     if (userId) {
       axios
-      .get(`${SERVER_URL}/profile/${userId}`, {
-        headers: { authorization: sessionStorage.getItem('jwt') },
-      })
-      .then(response => {
-        this.user = response.data
-      })
-      .catch(err => {
-        alert(`Could not get profile with user id ${userId}`)
-      })
+        .get(`${SERVER_URL}/profile/${userId}`, {
+          headers: { authorization: sessionStorage.getItem('jwt') },
+        })
+        .then(response => {
+          this.user = response.data
+        })
+        .catch(err => {
+          Message({
+            message: `Could not get profile with user id ${userId}`,
+            type: 'error',
+          })
+        })
     }
   },
   methods: {
@@ -64,24 +69,26 @@ export default {
           // this.searchText = ''
         })
         .catch(err => {
-          alert(`Could not find movies with name ${name}`)
+          Message({
+            message: `Could not find movies with name ${name}`,
+            type: 'error',
+          })
         })
     },
 
     handlePageSelection: function(page) {
       axios
-        .get(
-          `${SERVER_URL}/movies/search?name=${
-            this.searchText
-          }&page=${page}`
-        )
+        .get(`${SERVER_URL}/movies/search?name=${this.searchText}&page=${page}`)
         .then(response => {
           this.isSubmitted = true
           this.movies = response.data.movies
           this.pagesAmount = response.data.totalPages
         })
         .catch(err => {
-          alert('Error during page switch. Please, try again')
+          Message({
+            message: 'Error during page switch. Please, try again',
+            type: 'error',
+          })
         })
     },
 
@@ -142,7 +149,7 @@ export default {
       </div>
     </div>
 
-    <Message type="error" message="someError"></Message>
+    <!-- <Message type="error" message="someError"></Message> -->
 
     <MoviesList
       v-if="isSubmitted && !isDetailedInfoShown"

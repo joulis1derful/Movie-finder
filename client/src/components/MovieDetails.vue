@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import Message from '@/message'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 const IMDB_URL = process.env.VUE_APP_IMDB_URL
@@ -22,7 +23,10 @@ export default {
         this.movie = response.data
       })
       .catch(err => {
-        alert(`Could not fetch movie with id ${this.id}`)
+        Message({
+          message: `Could not fetch movie with id ${this.id}`,
+          type: 'error',
+        })
       })
   },
   methods: {
@@ -81,23 +85,23 @@ export default {
         </div>
       </div>
       <div class="overview">
-          <h3><strong>Overview</strong></h3>
-          <hr>
-          <div>
-            <h4>{{movie.overview}}</h4>
-          </div>
-          <div class="btn-group">
-            <a
-              :href="generateImdbLink()"
-              target="_blank"
-              class="btn btn-primary"
-            >View on IMDB</a>
-            <a
-              href="/"
-              class="btn btn-back"
-            >Go Back to Search</a>
-          </div>
+        <h3><strong>Overview</strong></h3>
+        <hr>
+        <div>
+          <h4>{{movie.overview}}</h4>
         </div>
+        <div class="btn-group">
+          <a
+            :href="generateImdbLink()"
+            target="_blank"
+            class="btn btn-primary"
+          >View on IMDB</a>
+          <a
+            href="/"
+            class="btn btn-back"
+          >Go Back to Search</a>
+        </div>
+      </div>
     </div>
   </div>
 </template>

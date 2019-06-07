@@ -1,7 +1,7 @@
 <script>
 import MoviesList from '@/components/MoviesList.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
-import Message from '@/components/Message.vue'
+import Message from '@/message'
 import axios from 'axios'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
@@ -11,7 +11,6 @@ export default {
   components: {
     MoviesList,
     MovieDetails,
-    Message,
   },
   data: function() {
     return {
@@ -27,6 +26,10 @@ export default {
   },
   methods: {
     loadProfile: function(userId) {
+      Message({
+        message: 'success',
+        type: 'success',
+      })
       axios
         .get(`${SERVER_URL}/profile/${userId}`, {
           headers: { authorization: sessionStorage.getItem('jwt') },
@@ -44,7 +47,10 @@ export default {
           this.isLoaded = true
         })
         .catch(err => {
-          alert(`Could not load profile with user id ${userId}`)
+          Message({
+            message: `Could not load profile with user id ${userId}`,
+            type: 'error',
+          })
         })
     },
     handleMovieChange: function(movies) {
@@ -63,7 +69,6 @@ export default {
 
 <template>
   <div class="container">
-    <Message type="success" message="hello"></Message>
     <div class="details">
       <blockquote>
         <h5>{{ user.firstName }} {{ user.lastName }}</h5>

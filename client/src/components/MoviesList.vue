@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import Message from '@/message'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 const IMAGE_PATH = process.env.VUE_APP_IMAGE_PATH_WIDTH_500
@@ -48,7 +49,10 @@ export default {
           this.$emit('onMovieChange', filteredMovies)
         })
         .catch(err => {
-          alert('Could not add movie to watch later list')
+          Message({
+            message: 'Could not add movie to watch later list',
+            type: 'error',
+          })
         })
     },
     removeFromWatchLater: function(movieId) {
@@ -68,7 +72,10 @@ export default {
           this.$emit('onMovieChange', filteredMovies)
         })
         .catch(err => {
-          alert('Could not remove movie from watch later list')
+          Message({
+            message: 'Could not remove movie from watch later list',
+            type: 'error',
+          })
         })
     },
 
@@ -123,6 +130,7 @@ export default {
     >
       <div
         v-for="movie in movies"
+        :key="movie.id"
         class="col-md-4"
       >
         <div class="well">
@@ -161,7 +169,10 @@ export default {
         v-if="totalPages <= 6"
         class="pagination"
       >
-        <ul v-for="n in totalPages">
+        <ul
+          v-for="n in totalPages"
+          :key="n"
+        >
           <li class="page-item"><a
               class="page-link"
               @click="handleSelectPage(n)"
@@ -183,7 +194,10 @@ export default {
           <li class="dots"><a>...</a></li>
         </ul>
 
-        <ul v-for="n in prevPages">
+        <ul
+          v-for="n in prevPages"
+          :key="n"
+        >
           <li class="page-item"><a
               class="page-link"
               @click="handleSelectPage(n)"
@@ -194,7 +208,10 @@ export default {
           <li class="page-item"><a class="page-link current-page">{{ currentPage }}</a></li>
         </ul>
 
-        <ul v-for="n in nextPages">
+        <ul
+          v-for="n in nextPages"
+          :key="n"
+        >
           <li class="page-item"><a
               class="page-link"
               @click="handleSelectPage(n)"
