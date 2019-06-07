@@ -1,16 +1,41 @@
 <script>
 export default {
   name: 'Message',
-  props: {
-    type: String,
-    message: String,
+  mounted: function() {
+    this.visible = true
+    this.startTimer()
+  },
+  data: function() {
+    return {
+      visible: false,
+      message: '',
+      duration: 3000,
+      type: 'info',
+      timer: null,
+    }
+  },
+  methods: {
+    handleAfterLeave() {
+      this.$destroy(true)
+      this.$el.parentNode.removeChild(this.$el)
+    },
+    startTimer() {
+      if (this.duration > 0) {
+        setTimeout(() => {
+          this.handleAfterLeave()
+        }, this.duration)
+      }
+    },
   },
 }
 </script>
 
 <template>
-  <div :class="['el-msg', type === 'error' ? 'error-msg' : type === 'success' ? 'success-msg' : '']">
-    <p :class="['msg__text', type === 'error' ? 'error' : type === 'success' ? 'success' : '']">
+  <div
+    v-show="visible"
+    :class="['el-msg', `${this.type}-msg`]"
+  >
+    <p :class="['msg__text', `${this.type}`]">
       {{ message }}
     </p>
   </div>
