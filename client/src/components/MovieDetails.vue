@@ -2,6 +2,7 @@
 import axios from 'axios'
 import Message from '@/message'
 import config from '@/config'
+import noImage from '@/assets/no-image.png'
 
 const SERVER_URL = config('SERVER_URL')
 const IMDB_URL = config('IMDB_URL')
@@ -15,6 +16,7 @@ export default {
   data: function() {
     return {
       movie: null,
+      noImage
     }
   },
   created: function() {
@@ -32,6 +34,9 @@ export default {
   },
   methods: {
     getFullPath() {
+      if (!this.movie.poster_path) {
+        return null
+      }
       const imageUrl = IMAGE_PATH
       return `${imageUrl}${this.movie.poster_path}`
     },
@@ -69,7 +74,7 @@ export default {
       <div class="row">
         <div class="movie-pic">
           <img
-            :src="getFullPath()"
+            :src="getFullPath() || noImage"
             class="thumbnail"
           >
         </div>
@@ -120,6 +125,10 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.movie-pic img {
+  height: 600px;
 }
 
 .movie-info {

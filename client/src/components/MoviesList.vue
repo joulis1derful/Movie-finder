@@ -2,6 +2,7 @@
 import axios from 'axios'
 import Message from '@/message'
 import config from '@/config'
+import noImage from '@/assets/no-image.png'
 
 const SERVER_URL = config('SERVER_URL')
 const IMAGE_PATH = config('IMAGE_PATH_WIDTH_500')
@@ -18,6 +19,7 @@ export default {
       prevPages: [],
       nextPages: [],
       currentPage: 1,
+      noImage,
     }
   },
   created: function() {
@@ -31,7 +33,12 @@ export default {
     },
     getImagePath: function(movie) {
       const imageUrl = IMAGE_PATH
-      return `${imageUrl + movie.poster_path}`
+      let imagePath = movie.poster_path
+      let img = `${imageUrl}${imagePath}`
+      if (!imagePath) {
+        img = null
+      }
+      return img
     },
     addToWatchLater: function(movieId) {
       axios
@@ -143,7 +150,7 @@ export default {
         class="col-md-4"
       >
         <div class="well">
-          <img :src="getImagePath(movie)">
+          <img :src="getImagePath(movie) || noImage">
           <h5>{{movie.title}}</h5>
           <div class="btn-group">
             <button
