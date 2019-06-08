@@ -50,7 +50,7 @@ export default {
             })
           } else {
             Message({
-              message: 'Something went wrong. Please try again',
+              message: `${err.response.data.message}. Please, check your settings`,
               type: 'error',
             })
           }
