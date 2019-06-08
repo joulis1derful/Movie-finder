@@ -85,11 +85,13 @@ export default {
           </ul>
         </div>
       </div>
-      <div class="overview">
-        <h3><strong>Overview</strong></h3>
-        <hr>
-        <div>
-          <h4>{{movie.overview}}</h4>
+      <div class="footer">
+        <div class="overview">
+          <h3><strong>Overview</strong></h3>
+          <hr>
+          <div class="overview__text">
+            <h4>{{movie.overview}}</h4>
+          </div>
         </div>
         <div class="btn-group">
           <a
@@ -111,6 +113,7 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
 }
 
 .row {
@@ -121,7 +124,7 @@ export default {
 
 .movie-info {
   align-self: center;
-}
+} 
 
 .list-group {
   display: flex;
@@ -134,8 +137,29 @@ export default {
   word-wrap: break-word;
 }
 
-.overview h4 {
+.btn-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.btn-group > * {
+  width: 10%;
+  margin: 20px 10px;
+}
+
+.overview {
+  align-self: flex-start;
+  margin-top: 20px;
   font-size: 20px;
   font-family: 'Times New Roman';
+}
+
+.overview > * {
+  margin: 0 5%;
+}
+
+.overview__text {
+  text-align: justify;
 }
 </style>

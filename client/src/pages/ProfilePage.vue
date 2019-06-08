@@ -67,15 +67,15 @@ export default {
 <template>
   <div class="container">
     <div class="details">
-      <blockquote>
-        <h5>{{ user.firstName }} {{ user.lastName }}</h5>
-      </blockquote>
-      <p>
-        {{ user.email }} <br>
-      </p>
+      <label class="profile-info">
+        <p class="name">{{ user.firstName }} {{ user.lastName }}</p>
+        <p class="email">
+          {{ user.email }} <br>
+        </p>
+      </label>
     </div>
     <div class="movie-list">
-      <h3>Favourite movies</h3>
+      <h3 v-if="!isDetailedInfoShown">Favourite movies</h3>
       <MoviesList
         v-if="isLoaded && !isDetailedInfoShown"
         :movies="movies"
@@ -98,17 +98,23 @@ export default {
   justify-content: flex-end;
 }
 
-.container .details {
+.details {
   align-self: flex-end;
+  margin-right: 5%;
 }
 
-.container .movie-list h3 {
+.movie-list h3 {
   font-size: 24px;
   font-weight: 700;
   text-align: center;
 }
 
-.container .details p {
+.name {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.email {
   font-size: 15px;
 }
 </style>
