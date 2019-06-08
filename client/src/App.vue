@@ -16,7 +16,7 @@ localStorage.setItem('secret', 'shhhared-secret')
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Lato, Helvetica, Arial, sans-serif;
   text-align: center;
   color: #2c3e50;
 }

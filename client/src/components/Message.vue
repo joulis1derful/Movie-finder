@@ -16,6 +16,7 @@ export default {
   },
   methods: {
     handleAfterLeave() {
+      this.visible = false
       this.$destroy(true)
       this.$el.parentNode.removeChild(this.$el)
     },
@@ -70,15 +71,37 @@ export default {
   border-color: #d9e7d4;
 }
 
+.info-msg {
+  border-color: #ebeefa;
+  background-color: #edf2fc;
+}
+
+.warning-msg {
+  border-color: #fbe3cc;
+  background-color: #fdf1e6;
+}
+
 .msg__text.error {
   color: #bc192a;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
 }
 
 .msg__text.success {
   color: #428527;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.msg__text.info {
+  color: #6b797f;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.msg__text.warning {
+  color: #e97500;
+  font-size: 15px;
   font-weight: 500;
 }
 </style>
