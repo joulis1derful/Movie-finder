@@ -1,8 +1,9 @@
 <script>
 import axios from 'axios'
 import Message from '@/message'
+import config from '@/config'
 
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const SERVER_URL = config('SERVER_URL')
 
 export default {
   name: 'Registration',
@@ -20,7 +21,7 @@ export default {
       if (!email || !password) {
         Message({
           message: 'Please fill all the fields',
-          type: 'success',
+          type: 'warning',
         })
         return
       }

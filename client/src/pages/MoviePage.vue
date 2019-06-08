@@ -4,8 +4,9 @@ import MovieDetails from '@/components/MovieDetails.vue'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import Message from '@/message'
+import config from '@/config'
 
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const SERVER_URL = config('SERVER_URL')
 
 export default {
   name: 'Movie',
@@ -148,8 +149,6 @@ export default {
         </form>
       </div>
     </div>
-
-    <!-- <Message type="error" message="someError"></Message> -->
 
     <MoviesList
       v-if="isSubmitted && !isDetailedInfoShown"

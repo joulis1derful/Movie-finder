@@ -3,8 +3,9 @@ import MoviesList from '@/components/MoviesList.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
 import Message from '@/message'
 import axios from 'axios'
+import config from '@/config'
 
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const SERVER_URL = config('SERVER_URL')
 
 export default {
   name: 'Profile',
@@ -26,10 +27,6 @@ export default {
   },
   methods: {
     loadProfile: function(userId) {
-      Message({
-        message: 'success',
-        type: 'success',
-      })
       axios
         .get(`${SERVER_URL}/profile/${userId}`, {
           headers: { authorization: sessionStorage.getItem('jwt') },

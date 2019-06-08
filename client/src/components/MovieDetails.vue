@@ -1,10 +1,11 @@
 <script>
 import axios from 'axios'
 import Message from '@/message'
+import config from '@/config'
 
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
-const IMDB_URL = process.env.VUE_APP_IMDB_URL
-const IMAGE_PATH = process.env.VUE_APP_IMAGE_PATH_WIDTH_500
+const SERVER_URL = config('SERVER_URL')
+const IMDB_URL = config('IMDB_URL')
+const IMAGE_PATH = config('IMAGE_PATH_WIDTH_500')
 
 export default {
   name: 'MovieDetails',
