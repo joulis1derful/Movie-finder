@@ -1,10 +1,10 @@
 const redis = require('async-redis')
 
-const getRedisInstance = (options) => {
+const getRedisInstance = options => {
 	return redis.createClient(options)
 }
 
-const close = (client) => {
+const close = client => {
 	client.quit()
 }
 

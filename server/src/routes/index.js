@@ -10,21 +10,20 @@ const setupRoutes = () => {
 
 	router.post('/register', auth.register)
 	router.post('/login', auth.login)
-  
+
 	router.get('/movies/top', movie.getTopMovies)
 	router.get('/movies/search', movie.findMovieByName)
 	router.get('/movies/:id', movie.getMovieById)
 
 	router.use('/profile', authMiddleware.checkToken)
-  
+
 	router.get('/profile/:id', profile.getById)
 	router.post('/profile/addWatchLater', profile.addWatchLater)
 	router.post('/profile/removeWatchLater', profile.removeWatchLater)
-   
+
 	router.use(errors)
-  
+
 	return router
 }
-  
+
 module.exports = setupRoutes
-  

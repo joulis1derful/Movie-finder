@@ -11,7 +11,7 @@ const createToken = async (email, next) => {
 	const token = jwt.sign({ email, userId: user.userId }, JWT_SECRET, {
 		expiresIn: tokenExpSecs
 	})
-	const client = redis.getRedisInstance({ url: REDIS_URL })
+	const client = redis.getRedisInstance({ url: REDIS_URL }, next)
 	await client.setex(user.userId, tokenExpSecs, token)
 	redis.close(client)
 
