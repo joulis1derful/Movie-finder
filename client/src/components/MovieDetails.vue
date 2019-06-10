@@ -16,7 +16,7 @@ export default {
   data: function() {
     return {
       movie: null,
-      noImage
+      noImage,
     }
   },
   created: function() {
@@ -133,7 +133,7 @@ export default {
 
 .movie-info {
   align-self: center;
-} 
+}
 
 .list-group {
   display: flex;

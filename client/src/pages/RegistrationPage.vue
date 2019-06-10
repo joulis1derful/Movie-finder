@@ -52,13 +52,15 @@ export default {
           ) {
             Message({
               message: `${
-                err.response.data
+                err.response.data.message
               }. Please, check your password and try once again`,
               type: 'error',
             })
           } else {
             Message({
-              message: `${err.response.data.message}. Please, check your settings`,
+              message: `${
+                err.response.data.message
+              }. Please, check your settings`,
               type: 'error',
             })
           }

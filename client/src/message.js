@@ -1,23 +1,23 @@
 import Vue from 'vue'
 import MessageComponent from './components/Message.vue'
 
-const MessageConstructor = Vue.extend(MessageComponent);
+const MessageConstructor = Vue.extend(MessageComponent)
 
 const Message = function(options) {
   options = options || {}
   if (typeof options === 'string') {
     options = {
-      message: options
+      message: options,
     }
   }
 
   const instance = new MessageConstructor({
-    data: options
+    data: options,
   })
   instance.$mount()
   document.body.appendChild(instance.$el)
- 
-  return instance
-};
 
-export default Message;
+  return instance
+}
+
+export default Message
